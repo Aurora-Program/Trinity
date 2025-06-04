@@ -1,17 +1,29 @@
 from Trinity import * 
 
 # Test Trigate class
-def test_trigate(): 
+def test_Operar():
     # Create an instance of Trigate
     trigate = Trigate()
+    a=trigate.operar(3, 2, 'XOR')
+    print(a)
 
-    # Test the default state
-    assert trigate.state == "off", "Default state should be 'off'"
+def test_Aprender():
+    # Create an instance of Trigate
+    trigate = Trigate()
+    a=trigate.aprendizaje(5, 3, 1)
+    print(a)
 
-    # Test turning on the trigate
-    trigate.turn_on()
-    assert trigate.state == "on", "State should be 'on' after turning on"
 
-    # Test turning off the trigate
-    trigate.turn_off()
-    assert trigate.state == "off", "State should be 'off' after turning off"
+def test_deducir():
+    # Create an instance of Trigate
+    trigate = Trigate()
+    a=trigate.deduccion_inversa('OR', 3, 1)
+    print(a)
+
+test_Aprender()
+test_Operar()   
+test_deducir()
+
+
+
+

@@ -124,6 +124,9 @@ def bitwise_nand(a, b):
 def bitwise_nor(a, b):
     return ~(a | b) & 0b111
 
+
+
+# We decided go to with OR / XOR technique to get the 3 bits value (why do we do like this again?)
 FUNCIONES_BOOL = {
     'XOR': bitwise_xor,
     'AND': bitwise_and,
@@ -136,6 +139,11 @@ FUNCIONES_BOOL = {
 # Mapeo inverso para obtener nombres de funciones
 FUNCIONES_INV = {v: k for k, v in FUNCIONES_BOOL.items()}
 
+
+# Todo: Implementar OR, XOR  para cada  bit y resolver M como valor de 3 Bits. (obtener )
+
+
+# Todo: Save A B R M in class Trigate
 class Trigate:
     """Módulo básico de razonamiento basado en triángulos booleanos"""
     def __init__(self):
@@ -193,10 +201,11 @@ class Transcender:
         self.evolver = Evolver()
         self.metaM_table = {}  # Tabla Ss -> MetaM
     
+    # Todo: fomula base in R. 
     def sintetizar(self, A, B, R):
         """Síntesis relacional basada en R"""
         S_bits = []
-        for i in range(3):  # Procesar cada bit (0-2)
+        for i in range(3):  # Procesar cada bit (0-2) -- Why?
             bit_A = (A >> (2-i)) & 1
             bit_B = (B >> (2-i)) & 1
             bit_R = (R >> (2-i)) & 1
@@ -240,7 +249,7 @@ class Transcender:
             'Ss': Ss,
             'MetaM': (M_inferior, Ms)
         }
-    
+    # Todo: cambiar nombre ss sintaxis superior (funcion inecesaria? - reutilziacion misma fucion de sisntesis)
     def calcular_ss(self, M_inferior, Ms):
         """Codifica (M1,M2,M3,Ms) en 3 bits (Ss) usando geometría booleana"""
         # Mapeo mejorado con codificación geométrica
@@ -253,7 +262,7 @@ class Transcender:
             'NOR': 0b10   # Mismo que OR
         }
         
-        # Codificar cada función en 2 bits
+        # Codificar cada función en 2 bits | Why?
         bits = [func_map.get(m, 0b00) for m in M_inferior]  # 3 funciones × 2 bits
         bits.append(func_map.get(Ms, 0b00))
         
@@ -291,7 +300,7 @@ class VectorFractal:
             capa9=self._interactuar_capa(self.capa9, v2.capa9, v3.capa9, 9),
             capa27=self._interactuar_capa(self.capa27, v2.capa27, v3.capa27, 27)
         )
-    
+    # Todo: esta funcion deberia estar en Transcender?
     def _interactuar_capa(self, c1, c2, c3, size):
         """Interacción fractal de tres capas de igual dimensión"""
         nueva_capa = []
@@ -306,7 +315,7 @@ class VectorFractal:
             # Usamos Ss como valor evolucionado
             nueva_capa.append(resultado['Ss'])
         return nueva_capa
-
+    # Todo: Esta fucuion deberia estar en Extender?
     def expandir(self, target_size):
         """Expansión adaptativa del vector"""
         if target_size <= 3:
