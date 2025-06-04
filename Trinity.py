@@ -31,7 +31,7 @@ Learning: Given A, B, and R, infer M (the logic function connecting the values).
 
 Inverse deduction: Given M, R, and one input (A or B), deduce the missing input【60:8-11†Aurora Program Software Architecture.pdf】.
 
-The TriageModule class implements all three modes, supporting various Boolean functions (XOR, AND, OR, XNOR, NAND, NOR).
+The Trigate class implements all three modes, supporting various Boolean functions (XOR, AND, OR, XNOR, NAND, NOR).
 
 3. Transcender and the Synthesis Process
 The Transcender is a higher-level structure composed of three triages operating in parallel over three inputs (A, B, C). Each triage produces a result and a corresponding logic function. Subsequently:
@@ -85,7 +85,7 @@ Ss: Final synthesized value at the upper layer.
 Coherence Validation: Logical consistency check for learning【60:27-28†Aurora Program Software Architecture.pdf】.
 
 Code/Class Quick Reference
-TriageModule: Fundamental deduction, learning, and inference operator.
+Trigate: Fundamental deduction, learning, and inference operator.
 
 Transcender: Combination of triages for advanced logical synthesis.
 
@@ -136,7 +136,7 @@ FUNCIONES_BOOL = {
 # Mapeo inverso para obtener nombres de funciones
 FUNCIONES_INV = {v: k for k, v in FUNCIONES_BOOL.items()}
 
-class TriageModule:
+class Trigate:
     """Módulo básico de razonamiento basado en triángulos booleanos"""
     def __init__(self):
         self.M = None  # Función lógica actual
@@ -176,9 +176,9 @@ class TriageModule:
 class Transcender:
     """Estructura superior que combina tres triages"""
     def __init__(self, M1='XOR', M2='XOR', M3='XOR'):
-        self.triage1 = TriageModule()
-        self.triage2 = TriageModule()
-        self.triage3 = TriageModule()
+        self.triage1 = Trigate()
+        self.triage2 = Trigate()
+        self.triage3 = Trigate()
         
         # Almacenar nombres de funciones para MetaM
         self.M1_name = M1
