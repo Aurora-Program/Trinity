@@ -385,7 +385,7 @@ class Extender:
         self.memoria = memoria_vectores
         self.diccionario_meta = diccionario_meta
         self.plantillas_fractales = self._generar_plantillas_base()
-    
+    #?
     def _generar_plantillas_base(self):
         """Genera plantillas fractales fundamentales"""
         return {
@@ -521,6 +521,7 @@ class Extender:
         """Calcula hash único para identificación"""
         return hash(tuple(vector.capa3 + vector.capa9 + vector.capa27))
 
+# Todo: integara solucion en el resto de clases?
 class AuroraEcosistema:
     def __init__(self):
         self.memoria = []
@@ -532,10 +533,13 @@ class AuroraEcosistema:
         """Actualiza el contexto para reconstrucciones"""
         self.contexto = nuevo_contexto
     
+    
+    # Todo: S superior only need calculaion form capa 3
     def _calcular_ss(self, vector):
         """Código de identificación fractal único"""
         return hash(tuple(vector.capa3 + vector.capa9 + vector.capa27))
     
+    # Tod: deberia estar en Transcender?
     def procesar_entrada(self, v1, v2, v3):
         """Procesa tres vectores en el ecosistema"""
         # 1. Evolución fractal
@@ -550,7 +554,7 @@ class AuroraEcosistema:
         self.diccionario_meta[ss] = metaM
         
         return nuevo_vector, ss
-    
+    # Todo: deberia estar en Evolver?
     def _extraer_metaM(self, v1, v2, v3, resultado):
         """Extrae relaciones MetaM entre vectores originales y resultado"""
         metaM = {}
