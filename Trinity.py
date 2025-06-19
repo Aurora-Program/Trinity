@@ -122,178 +122,299 @@ class Transcender:
 # ==============================================================================
 class KnowledgeBase:
     """
-    Almacena el conocimiento validado del sistema. 
-    La estructura central es un registro de correspondencias unívocas entre
-    la Estructura (Ms) y su Función (MetaM) y Forma (Ss). 
+    Almacena el conocimiento validado del sistema organizado en espacios lógicos.
+    Cada espacio representa un dominio de conocimiento independiente (médico, financiero, etc.)
+    con sus propias reglas y correspondencias.
     """
     def __init__(self):
-        self.axiom_registry = {}
-
-    def store_axiom(self, Ms, MetaM, Ss, original_inputs):
-        """Almacena una nueva regla coherente en la base de conocimiento."""
-        ms_key = tuple(Ms)
-        if ms_key in self.axiom_registry and self.axiom_registry[ms_key]["MetaM"] != MetaM:
-            print(f"ALERTA: Incoherencia Lógica Detectada para Ms={Ms}. Se rechaza el nuevo patrón.")
+        # Estructura principal: diccionario de espacios
+        # Cada espacio contiene su registro de axiomas y metadatos
+        self.spaces = {
+            "default": {
+                "description": "Espacio lógico predeterminado",
+                "axiom_registry": {}
+            }
+        }
+    
+    def create_space(self, name, description=""):
+        """Crea un nuevo espacio lógico si no existe"""
+        if name in self.spaces:
+            print(f"Advertencia: El espacio '{name}' ya existe")
             return False
         
-        self.axiom_registry[ms_key] = {
+        self.spaces[name] = {
+            "description": description,
+            "axiom_registry": {}
+        }
+        print(f"Espacio '{name}' creado: {description}")
+        return True
+    
+    def delete_space(self, name):
+        """Elimina un espacio lógico existente"""
+        if name not in self.spaces:
+            print(f"Error: El espacio '{name}' no existe")
+            return False
+        
+        if name == "default":
+            print("Error: No se puede eliminar el espacio 'default'")
+            return False
+        
+        del self.spaces[name]
+        print(f"Espacio '{name}' eliminado")
+        return True
+    
+    def store_axiom(self, space_name, Ms, MetaM, Ss, original_inputs):
+        """
+        Almacena un nuevo axioma en un espacio lógico específico.
+        Verifica coherencia según el principio de correspondencia única.
+        """
+        # Validar existencia del espacio
+        if space_name not in self.spaces:
+            print(f"Error: Espacio '{space_name}' no encontrado")
+            return False
+        
+        space = self.spaces[space_name]
+        ms_key = tuple(Ms)
+        
+        # Verificar correspondencia única (Ms <-> MetaM)
+        existing_axiom = space["axiom_registry"].get(ms_key)
+        if existing_axiom and existing_axiom["MetaM"] != MetaM:
+            print(f"ALERTA: Incoherencia en '{space_name}' para Ms={Ms}")
+            print(f"  MetaM existente: {existing_axiom['MetaM']}")
+            print(f"  MetaM nuevo:     {MetaM}")
+            return False
+        
+        # Almacenar nuevo axioma
+        space["axiom_registry"][ms_key] = {
             "MetaM": MetaM, 
             "Ss": Ss,
             "original_inputs": original_inputs
         }
+        print(f"Axioma almacenado en '{space_name}' para Ms={Ms}")
         return True
-
-    def get_axiom_by_ms(self, Ms):
-        """Recupera un axioma usando la Estructura (Ms) como clave."""
-        return self.axiom_registry.get(tuple(Ms))
+    
+    def get_axiom_by_ms(self, space_name, Ms):
+        """Recupera un axioma de un espacio específico usando Ms como clave"""
+        if space_name not in self.spaces:
+            print(f"Error: Espacio '{space_name}' no encontrado")
+            return None
+        
+        return self.spaces[space_name]["axiom_registry"].get(tuple(Ms))
+    
+    def get_axioms_in_space(self, space_name):
+        """
+        Devuelve el diccionario de axiomas de un espacio específico.
+        """
+        if space_name not in self.spaces:
+            print(f"Error: Espacio '{space_name}' no encontrado")
+            return {}
+        return self.spaces[space_name]["axiom_registry"]
+    
+    def list_spaces(self):
+        """Devuelve lista de espacios disponibles"""
+        return list(self.spaces.keys())
+    
+    def space_stats(self, space_name):
+        """Devuelve estadísticas de un espacio"""
+        if space_name not in self.spaces:
+            return None
+        
+        space = self.spaces[space_name]
+        return {
+            "description": space["description"],
+            "axiom_count": len(space["axiom_registry"])
+        }
 
 # ==============================================================================
-#  CLASE 4: Evolver (Motor de Formalización del Conocimiento) - Sin cambios
+#  CLASE 4: Evolver (VERSIÓN COMPLETA)
 # ==============================================================================
 class Evolver:
     """
-    Analiza los resultados de múltiples Transcenders para destilar principios
-    universales (Arquetipos) y formalizar el conocimiento. 
+    Analiza resultados para destilar Arquetipos, Dinámicas y Relaciones.
     """
     def __init__(self, knowledge_base):
         self.kb = knowledge_base
+        # NUEVO: Almacenes para los modelos de Dinámicas y Relator
+        self.dynamic_models = {}
+        self.relational_maps = {}
 
-    def formalize(self, transcender_run_data):
+    def formalize_axiom(self, transcender_data, space_name="default"):
+        """Formaliza un único resultado de Transcender como un axioma."""
+        Ms = transcender_data["outputs"]["Ms"]
+        MetaM = transcender_data["outputs"]["MetaM"]
+        Ss = transcender_data["outputs"]["Ss"]
+        inputs = transcender_data["inputs"]
+        print(f"Evolver (Archetype): Formalizando axioma en '{space_name}' para Ms={Ms}...")
+        self.kb.store_axiom(space_name, Ms, MetaM, Ss, inputs)
+
+    # NUEVO: Método para formalizar Dinámicas
+    def formalize_dynamics(self, interaction_sequence, space_name="default"):
         """
-        Proceso principal del Evolver. Toma la salida de un Transcender y la formaliza.
+        Analiza una secuencia de interacciones (representadas por sus Ss)
+        y la almacena como una "coreografía" exitosa.
         """
-        self._formalize_archetype(transcender_run_data)
-        self._formalize_dynamics(transcender_run_data)
-        self._formalize_relator(transcender_run_data)
+        print(f"Evolver (Dynamics): Formalizando secuencia de interacción en '{space_name}'...")
+        if space_name not in self.dynamic_models:
+            self.dynamic_models[space_name] = []
+        self.dynamic_models[space_name].append(interaction_sequence)
 
-    def _formalize_archetype(self, data):
-        """Establece la relación Ms -> (MetaM, Ss) como un axioma en la KB. """
-        Ms = data["outputs"]["Ms"]
-        MetaM = data["outputs"]["MetaM"]
-        Ss = data["outputs"]["Ss"]
-        inputs = data["inputs"]
-        print(f"Evolver (Archetype): Formalizando axioma para Ms={Ms}...")
-        self.kb.store_axiom(Ms, MetaM, Ss, inputs)
+    # NUEVO: Método para construir el mapa del Relator
+    def build_relational_map(self, space_name="default"):
+        """
+        Analiza todos los axiomas en un espacio para mapear las distancias
+        conceptuales (distancia de Hamming) entre ellos.
+        """
+        print(f"Evolver (Relator): Construyendo mapa relacional para el espacio '{space_name}'...")
+        axioms = self.kb.get_axioms_in_space(space_name)
+        if len(axioms) < 2:
+            print(" -> No hay suficientes axiomas para construir un mapa.")
+            return
 
-    def _formalize_dynamics(self, data):
-        """Placeholder: Analizaría secuencias de interacciones (Ss) a lo largo del tiempo. """
-        pass
+        # Extraer todos los vectores Ms y Ss del espacio
+        concepts = {ms: data["Ss"] for ms, data in axioms.items()}
+        map_matrix = {}
 
-    def _formalize_relator(self, data):
-        """Placeholder: Analizaría las distancias semánticas entre conceptos en un mismo espacio. """
-        pass
+        for ms1, ss1 in concepts.items():
+            distances = {}
+            for ms2, ss2 in concepts.items():
+                if ms1 == ms2: continue
+                # Calcular distancia de Hamming
+                dist = self._hamming_distance(ss1, ss2)
+                distances[ms2] = dist
+            map_matrix[ms1] = distances
         
-    def generate_guide_package(self):
-        """
-        Genera el paquete de guías para el Extender, que contiene el conocimiento formalizado. 
-        """
-        return {"axiom_registry": self.kb.axiom_registry}
+        self.relational_maps[space_name] = map_matrix
+
+    def _hamming_distance(self, v1, v2):
+        """Calcula la distancia de Hamming. Un `None` se trata como una diferencia."""
+        distance = 0
+        for i in range(len(v1)):
+            if v1[i] is None or v2[i] is None or v1[i] != v2[i]:
+                if v1[i] == v2[i]: # ambos son None
+                    continue
+                distance += 1
+        return distance
+        
+    # MODIFICADO: Ahora genera un paquete de guías mucho más rico
+    def generate_guide_package(self, space_name):
+        """Genera un paquete de guías completo para un espacio."""
+        if space_name not in self.kb.spaces: return None
+        return {
+            "space": space_name,
+            "axiom_registry": self.kb.get_axioms_in_space(space_name),
+            "dynamic_model": self.dynamic_models.get(space_name, []),
+            "relational_map": self.relational_maps.get(space_name, {})
+        }
 
 # ==============================================================================
-#  CLASE 5: Extender (Motor de Reconstrucción Guiada) - Sin cambios
+#  CLASE 5: Extender (VERSIÓN MEJORADA)
 # ==============================================================================
 class Extender:
-    """
-    Utiliza las leyes formalizadas por el Evolver para construir resultados
-    tangibles a partir de conocimiento abstracto. 
-    """
     def __init__(self):
         self.guide_package = None
 
     def load_guide_package(self, package):
-        """Carga el paquete de conocimiento generado por el Evolver. """
         self.guide_package = package
         print("Extender: Paquete de Guías del Evolver cargado.")
 
     def reconstruct(self, target_ms):
-        """
-        Reconstruye la información detallada a partir de una Estructura (Ms) objetivo.
-        """
-        if not self.guide_package:
-            raise Exception("El Extender no puede operar sin un Paquete de Guías.")
-            
+        if not self.guide_package: raise Exception("Paquete de guías no cargado.")
+        
         print(f"\nExtender: Iniciando reconstrucción para Ms_objetivo = {target_ms}...")
-        axiom = self.guide_package["axiom_registry"].get(tuple(target_ms))
+        axiom_registry = self.guide_package["axiom_registry"]
+        axiom = axiom_registry.get(tuple(target_ms))
         
         if not axiom:
-            print(f"Extender: No se encontró ningún axioma para Ms={target_ms}. Reconstrucción fallida.")
+            print(f" -> Reconstrucción fallida. No se encontró axioma.")
             return None
 
-        print(f"Extender (Filtro Axiomático): Axioma encontrado. MetaM={axiom['MetaM']}.")
-        reconstructed_data = axiom["original_inputs"]
-        print(f"Extender: Reconstrucción completada. Datos originales recuperados: {reconstructed_data}")
-        return reconstructed_data
+        print(f" -> (Filtro Axiomático): Axioma encontrado.")
+        return axiom["original_inputs"]
 
+    # NUEVO: Método para usar el mapa del Relator
+    def suggest_alternatives(self, target_ms, max_suggestions=2):
+        """
+        Usa el mapa relacional para sugerir conceptos 'cercanos' al objetivo.
+        """
+        if not self.guide_package or not self.guide_package["relational_map"]:
+            print("Extender (Relator): No hay mapa relacional cargado para sugerir alternativas.")
+            return []
+        
+        print(f"Extender (Relator): Buscando alternativas para Ms = {target_ms}...")
+        relational_map = self.guide_package["relational_map"]
+        
+        # Obtener las distancias para nuestro Ms objetivo
+        distances = relational_map.get(tuple(target_ms))
+        if not distances:
+            print(" -> No se encontraron distancias para este concepto.")
+            return []
+
+        # Ordenar por distancia (más cercano primero)
+        sorted_alternatives = sorted(distances.items(), key=lambda item: item[1])
+        
+        print(f" -> Conceptos cercanos encontrados: {sorted_alternatives}")
+        return sorted_alternatives[:max_suggestions]
 # ==============================================================================
-#  BLOQUE DE EJECUCIÓN PRINCIPAL
+#  BLOQUE DE EJECUCIÓN PRINCIPAL: DEMO DE EVOLVER COMPLETO
 # ==============================================================================
 if __name__ == "__main__":
-    # --- 1. Prueba del sistema binario original ---
-    print("="*20 + " PRUEBA DEL SISTEMA BINARIO " + "="*20)
-    entradas_A = [1, 0, 1]
-    entradas_B = [1, 1, 0]
-    entradas_C = [0, 0, 1]
-
-    # Fases de síntesis, formalización y aplicación
-    trans = Transcender()
-    Ms_calculado, Ss_calculado, MetaM_calculado = trans.procesar(entradas_A, entradas_B, entradas_C)
-    print(f"Transcender ha procesado las entradas.")
-    print(f"  > Ms (Estructura) generado: {Ms_calculado}")
-    print(f"  > Ss (Forma) generado:      {Ss_calculado}")
-    print(f"  > MetaM (Función) generado: {MetaM_calculado}")
-
     kb = KnowledgeBase()
     evolver = Evolver(kb)
-    evolver.formalize(trans.last_run_data)
-    guide_pkg = evolver.generate_guide_package()
+    trans = Transcender()
+    
+    # 1. Crear un espacio y poblarlo con varios conceptos (axiomas)
+    print("="*20 + " FASE 1: POBLANDO EL ESPACIO 'creative_writing' " + "="*20)
+    kb.create_space("creative_writing", "Conceptos para escritura de ficción")
+    
+    concepts = {
+        "protagonista_heroico": {"InA": [1,1,1], "InB": [0,0,0], "InC": [1,0,1]},
+        "protagonista_atormentado": {"InA": [1,1,0], "InB": [0,0,1], "InC": [1,0,0]},
+        "villano_carismatico": {"InA": [0,0,0], "InB": [1,1,1], "InC": [0,1,0]},
+        "villano_brutal": {"InA": [0,0,1], "InB": [1,1,0], "InC": [0,1,1]},
+        "aliado_leal": {"InA": [1,0,1], "InB": [0,1,0], "InC": [1,1,1]}
+    }
 
+    # Diccionario para mapear Ms a nombres de conceptos para el reporte final
+    ms_to_name_map = {}
+
+    for name, inputs in concepts.items():
+        print(f"\nProcesando concepto: '{name}'")
+        ms, ss, metam = trans.procesar(**inputs)
+        evolver.formalize_axiom(trans.last_run_data, "creative_writing")
+        ms_to_name_map[tuple(ms)] = name
+
+    # 2. Formalizar una secuencia de interacción (Dinámicas)
+    print("\n" + "="*20 + " FASE 2: APRENDIENDO DINÁMICAS " + "="*20)
+    interaction = [[1,0,0], [0,1,0], [1,1,1]]
+    evolver.formalize_dynamics(interaction, "creative_writing")
+
+    # 3. Construir el mapa conceptual (Relator)
+    print("\n" + "="*20 + " FASE 3: CONSTRUYENDO MAPA RELACIONAL " + "="*20)
+    evolver.build_relational_map("creative_writing")
+
+    # 4. Usar el Extender con el conocimiento completo
+    print("\n" + "="*20 + " FASE 4: USANDO EL EXTENDER MEJORADO " + "="*20)
+    
+    guide_pkg = evolver.generate_guide_package("creative_writing")
     extender = Extender()
     extender.load_guide_package(guide_pkg)
-    reconstruccion = extender.reconstruct(Ms_calculado)
-
-    # Verificación
-    if reconstruccion:
-        print("\nVerificación binaria exitosa:", reconstruccion == {"InA": entradas_A, "InB": entradas_B, "InC": entradas_C})
     
-    # --- 2. Prueba de lógica ternaria ---
-    print("\n" + "="*20 + " PRUEBA DE LÓGICA TERNARIA " + "="*20)
+    print("\n--- Conocimiento en Paquete de Guías ---")
+    print(f"Modelo de Dinámicas aprendido: {guide_pkg['dynamic_model']}")
+    print(f"Mapa Relacional (distancias desde cada Ms):")
+    for ms_tuple, distances in guide_pkg['relational_map'].items():
+        print(f"  Desde '{ms_to_name_map.get(ms_tuple, 'desconocido')}' {ms_tuple}:")
+        for alt_ms_tuple, dist in distances.items():
+            alt_name = ms_to_name_map.get(alt_ms_tuple, 'desconocido')
+            print(f"    -> a '{alt_name}' {alt_ms_tuple}: {dist}")
+    print("----------------------------------------")
     
-    # Caso 1: Inferencia con NULL en la entrada
-    tg_ternario_1 = Trigate(A=[1, 0, None], B=[1, 1, 0], M=[0, 1, 1])
-    R_inferido = tg_ternario_1.inferir()
-    print(f"Caso 1 (Inferencia): A=[1,0,None], B=[1,1,0], M=[0,1,1] => R = {R_inferido}")
+    # Pedir al Extender que sugiera alternativas a "protagonista_heroico"
+    ms_heroico_tuple = next(ms for ms, name in ms_to_name_map.items() if name == "protagonista_heroico")
     
-    # Caso 2: Aprendizaje con NULL en el resultado
-    tg_ternario_2 = Trigate(A=[1, 0, 1], B=[1, 1, 0], R=[0, 1, None])
-    M_aprendido = tg_ternario_2.aprender()
-    print(f"Caso 2 (Aprendizaje): A=[1,0,1], B=[1,1,0], R=[0,1,None] => M = {M_aprendido}")
+    suggestions = extender.suggest_alternatives(list(ms_heroico_tuple))
     
-    # Caso 3: Síntesis de S con NULL
-    tg_ternario_3 = Trigate(A=[1, 0, 1], B=[0, 1, 0], R=[1, None, 0])
-    S_sintetizado = tg_ternario_3.sintesis_S()
-    print(f"Caso 3 (Síntesis S): A=[1,0,1], B=[0,1,0], R=[1,None,0] => S = {S_sintetizado}")
-    
-    # Caso 4: Sistema completo con incertidumbre
-    print("\n" + "="*20 + " SISTEMA COMPLETO CON INCERTIDUMBRE " + "="*20)
-    entradas_ternarias = {
-        "InA": [1, 0, None], 
-        "InB": [1, 1, 0], 
-        "InC": [0, None, 1]
-    }
-    
-    trans_ternario = Transcender()
-    Ms_ternario, Ss_ternario, MetaM_ternario = trans_ternario.procesar(**entradas_ternarias)
-    print(f"\nTranscender con entradas ternarias:")
-    print(f"  > Ms (Estructura) generado: {Ms_ternario}")
-    print(f"  > Ss (Forma) generado:      {Ss_ternario}")
-    print(f"  > MetaM (Función) generado: {MetaM_ternario}")
-    
-    kb_ternario = KnowledgeBase()
-    evolver_ternario = Evolver(kb_ternario)
-    evolver_ternario.formalize(trans_ternario.last_run_data)
-    
-    extender_ternario = Extender()
-    extender_ternario.load_guide_package(evolver_ternario.generate_guide_package())
-    reconstruccion_ternaria = extender_ternario.reconstruct(Ms_ternario)
-    
-    print("\nVerificación ternaria:", reconstruccion_ternaria == entradas_ternarias)
+    print(f"\nSugerencias de alternativas para 'protagonista_heroico' (Ms={list(ms_heroico_tuple)}):")
+    for alt_ms, dist in suggestions:
+        alt_name = ms_to_name_map.get(alt_ms, 'desconocido')
+        print(f" -> Concepto cercano: '{alt_name}' (Ms={list(alt_ms)}) con una distancia de {dist}")
