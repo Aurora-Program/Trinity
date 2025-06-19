@@ -1,4 +1,4 @@
-#  Trinity Library: Fractal & Golden-Ratio-Based Reasoning Engine
+#  Trinity Library: Fractal
 
 > Bilingual README | README bilingüe (English & Español)
 
@@ -10,7 +10,7 @@
 - **Trigate**: Atomic unit for reasoning, learning, and deduction
 - **Transcender**: Synthesizes high-level meaning via golden-ratio-based thresholds
 - **Evolver**: Manages dynamic, Fibonacci-based context across layers
-- **GoldenExtender**: Enables deep interpretability through recursive reconstruction
+- *Extender**: Enables deep interpretability through recursive reconstruction
 - **FractalModel**: Full layered system with both synthesis and analysis
 
 
@@ -18,11 +18,11 @@
 ##  System Estructure  / Estructura del Sistema
 
 ```text
-inputs → Trigates → Transcender → Evolver → output
+inputs → Trigates → Transcender → Evolver 
                          ↓
                       Extender
                          ↓
-                   Interpretación
+                       Output
 ```
 
 ---
@@ -45,9 +45,9 @@ model.golden_insight(output, 2)
 
 ###  Características Principales
 - **Trigate**: Unidad mínima para razonar, aprender y deducir
-- **Transcender**: Sintetiza conocimiento con umbral áureo (2/3)
-- **Evolver**: Contexto dinámico con secuencias Fibonacci mod 8
-- **GoldenExtender**: Interpretabilidad profunda y fractal
+- **Transcender**: Sintetiza conocimiento.
+- **Evolver**: Contexto dinámico con secuencias
+- **Extender**: Interpretabilidad profunda y fractal
 - **FractalModel**: Sistema completo de capas con síntesis e interpretación
 
 ### Ejemplo
