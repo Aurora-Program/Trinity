@@ -386,23 +386,18 @@ class FractalProcessor:
         Síntesis Nivel 1: Crea un Vector Fractal a partir de tres vectores básicos
         Documentación: 4.2. Level 1 Synthesis: Creating a Fractal Vector
         """
-        # Capa 3 (27 dimensiones): Descomposición de las entradas
-        input_components = A + B + C  # 9 componentes -> expandimos a 27
-        layer3 = [input_components[i % 9] for i in range(27)]  # Patrón recursivo
-        
-        # Capa 2 (9 dimensiones): Síntesis intermedia
+        # Capa 3 (27 dimensiones): 9 vectores de 3 trits, repetidos 3 veces cada uno
+        base_vectors = [A, B, C, A, B, C, A, B, C]  # 9 vectores de 3 trits
+        layer3 = base_vectors * 3  # 27 vectores de 3 trits
+
+        # Capa 2 (9 dimensiones): síntesis intermedia
         layer2 = []
-        for i in range(0, 27, 9):  # Procesar en grupos de 9
-            group = layer3[i:i+9]
-            subgroup_results = []
-            for j in range(0, 9, 3):  # Procesar en subgrupos de 3
-                # Corregido: pasar listas de 3 elementos, no escalares
-                trio = group[j:j+3]
-                Ms, _, _ = self.transcender.procesar(trio[0], trio[1], trio[2])
-                subgroup_results.append(Ms)
-            layer2.extend(subgroup_results)
-        
-        # Capa 1 (3 dimensiones): Síntesis global
+        for i in range(0, 27, 3):  # Procesar en grupos de 3 vectores
+            trio = layer3[i:i+3]  # trio = [vec1, vec2, vec3], cada uno lista de 3 trits
+            Ms, _, _ = self.transcender.procesar(trio[0], trio[1], trio[2])
+            layer2.append(Ms)
+
+        # Capa 1 (3 dimensiones): síntesis global
         Ms, Ss, MetaM = self.transcender.procesar(
             layer2[0], layer2[1], layer2[2]
         )
@@ -518,13 +513,22 @@ if __name__ == "__main__":
     print(fv_base1)
     
     # Almacenar en base de conocimiento
+    # Guardar Ms, Ss y MetaM reales del vector fractal base
+    Ms = fv_base1.layer1
+    Ss = fv_base1.layer2  # O puedes definir una capa específica como forma
+    MetaM = fv_base1.layer3  # O puedes definir una estructura más abstracta
+
+    # Formalizar el axioma con los datos correctos
+    # Si prefieres usar solo la capa 1 como Ms y las otras como Ss y MetaM, ajusta aquí
+    # Aquí se usa layer1 como Ms, layer2 como Ss, layer3 como MetaM
+
     evolver = Evolver(kb)
     evolver.formalize_axiom({
         "inputs": {"A": [1,0,1], "B": [0,1,0], "C": [1,1,1]},
         "outputs": {
-            "Ms": fv_base1.layer1,
-            "Ss": None,  # Placeholder para ejemplo
-            "MetaM": None
+            "Ms": Ms,
+            "Ss": Ss,
+            "MetaM": MetaM
         }
     }, "fractal_concepts")
     
@@ -562,4 +566,4 @@ if __name__ == "__main__":
     target_ms = fv_base1.layer1
     reconstructed = extender.reconstruct(target_ms)
     print(f"\nReconstrucción para Ms={target_ms}:")
-    print(f"Entradas originales: {reconstructed['original_inputs']}")
+    print(f"Entradas originales: {reconstructed}")
