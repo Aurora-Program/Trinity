@@ -1,5 +1,7 @@
 from alfa2 import * 
 
+
+
 A = [1, 0, 1]
 B = [1, 1, 0]
 M = [0, 1,1 ]  # XOR, XNOR, XOR

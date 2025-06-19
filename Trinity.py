@@ -226,90 +226,60 @@ class KnowledgeBase:
             "axiom_count": len(space["axiom_registry"])
         }
 
-# ==============================================================================
-#  CLASE 4: Evolver (VERSIÓN COMPLETA)
-# ==============================================================================
 class Evolver:
-    """
-    Analiza resultados para destilar Arquetipos, Dinámicas y Relaciones.
-    """
-    def __init__(self, knowledge_base):
-        self.kb = knowledge_base
-        # NUEVO: Almacenes para los modelos de Dinámicas y Relator
-        self.dynamic_models = {}
-        self.relational_maps = {}
-
-    def formalize_axiom(self, transcender_data, space_name="default"):
-        """Formaliza un único resultado de Transcender como un axioma."""
-        Ms = transcender_data["outputs"]["Ms"]
-        MetaM = transcender_data["outputs"]["MetaM"]
-        Ss = transcender_data["outputs"]["Ss"]
-        inputs = transcender_data["inputs"]
-        print(f"Evolver (Archetype): Formalizando axioma en '{space_name}' para Ms={Ms}...")
-        self.kb.store_axiom(space_name, Ms, MetaM, Ss, inputs)
-
-    # NUEVO: Método para formalizar Dinámicas
-    def formalize_dynamics(self, interaction_sequence, space_name="default"):
-        """
-        Analiza una secuencia de interacciones (representadas por sus Ss)
-        y la almacena como una "coreografía" exitosa.
-        """
-        print(f"Evolver (Dynamics): Formalizando secuencia de interacción en '{space_name}'...")
-        if space_name not in self.dynamic_models:
-            self.dynamic_models[space_name] = []
-        self.dynamic_models[space_name].append(interaction_sequence)
-
-    # NUEVO: Método para construir el mapa del Relator
-    def build_relational_map(self, space_name="default"):
-        """
-        Analiza todos los axiomas en un espacio para mapear las distancias
-        conceptuales (distancia de Hamming) entre ellos.
-        """
-        print(f"Evolver (Relator): Construyendo mapa relacional para el espacio '{space_name}'...")
-        axioms = self.kb.get_axioms_in_space(space_name)
-        if len(axioms) < 2:
-            print(" -> No hay suficientes axiomas para construir un mapa.")
-            return
-
-        # Extraer todos los vectores Ms y Ss del espacio
-        concepts = {ms: data["Ss"] for ms, data in axioms.items()}
-        map_matrix = {}
-
-        for ms1, ss1 in concepts.items():
-            distances = {}
-            for ms2, ss2 in concepts.items():
-                if ms1 == ms2: continue
-                # Calcular distancia de Hamming
-                dist = self._hamming_distance(ss1, ss2)
-                distances[ms2] = dist
-            map_matrix[ms1] = distances
-        
-        self.relational_maps[space_name] = map_matrix
+    """El Evolver ahora incluye la lógica del Relator para clustering."""
+    def __init__(self):
+        self.relational_map = None
 
     def _hamming_distance(self, v1, v2):
-        """Calcula la distancia de Hamming. Un `None` se trata como una diferencia."""
+        # Compara las capas más abstractas (L1) para una similitud fundamental
         distance = 0
-        for i in range(len(v1)):
-            if v1[i] is None or v2[i] is None or v1[i] != v2[i]:
-                if v1[i] == v2[i]: # ambos son None
-                    continue
+        for i in range(len(v1.layer1)):
+            if v1.layer1[i] != v2.layer1[i]:
                 distance += 1
         return distance
-        
-    # MODIFICADO: Ahora genera un paquete de guías mucho más rico
-    def generate_guide_package(self, space_name):
-        """Genera un paquete de guías completo para un espacio."""
-        if space_name not in self.kb.spaces: return None
-        return {
-            "space": space_name,
-            "axiom_registry": self.kb.get_axioms_in_space(space_name),
-            "dynamic_model": self.dynamic_models.get(space_name, []),
-            "relational_map": self.relational_maps.get(space_name, {})
-        }
 
-# ==============================================================================
-#  CLASE 5: Extender (VERSIÓN MEJORADA)
-# ==============================================================================
+    def build_relational_map(self, concepts_dict):
+        """Construye un mapa de distancias entre todos los conceptos."""
+        self.relational_map = {}
+        letters = list(concepts_dict.keys())
+        for i in range(len(letters)):
+            for j in range(i, len(letters)):
+                letter1, letter2 = letters[i], letters[j]
+                fv1, fv2 = concepts_dict[letter1], concepts_dict[letter2]
+                dist = self._hamming_distance(fv1, fv2)
+                
+                # Almacenar distancia simétricamente
+                self.relational_map.setdefault(letter1, {})[letter2] = dist
+                self.relational_map.setdefault(letter2, {})[letter1] = dist
+
+    def discover_clusters(self, threshold=1):
+        """Descubre clústeres de conceptos basados en un umbral de distancia."""
+        if not self.relational_map:
+            print("Error: El mapa relacional debe ser construido primero.")
+            return []
+        
+        clusters = []
+        unclustered = set(self.relational_map.keys())
+
+        while unclustered:
+            # Iniciar un nuevo clúster
+            seed = unclustered.pop()
+            new_cluster = {seed}
+            
+            # Buscar miembros para el clúster
+            queue = [seed]
+            while queue:
+                current_letter = queue.pop(0)
+                # Encontrar vecinos cercanos
+                for neighbor, distance in self.relational_map[current_letter].items():
+                    if neighbor in unclustered and distance <= threshold:
+                        new_cluster.add(neighbor)
+                        unclustered.remove(neighbor)
+                        queue.append(neighbor)
+            clusters.append(sorted(list(new_cluster)))
+        return clusters
+
 class Extender:
     def __init__(self):
         self.guide_package = None
