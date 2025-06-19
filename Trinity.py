@@ -1,3 +1,4 @@
+import random
 # ==============================================================================
 #  CLASE 1: Trigate (VERSIÓN TERNARIA)
 # ==============================================================================
@@ -354,67 +355,211 @@ class Extender:
         
         print(f" -> Conceptos cercanos encontrados: {sorted_alternatives}")
         return sorted_alternatives[:max_suggestions]
+class FractalVector:
+    """Representa un vector de conocimiento fractal con estructura jerárquica"""
+    def __init__(self, layer1, layer2, layer3):
+        """
+        Inicializa el vector fractal con sus tres capas:
+        - layer1: 3 dimensiones (síntesis global)
+        - layer2: 9 dimensiones (3 vectores de 3)
+        - layer3: 27 dimensiones (9 vectores de 3)
+        """
+        self.layer1 = layer1  # Vector de 3 dimensiones
+        self.layer2 = layer2  # Lista de 3 vectores (cada uno de 3 dimensiones)
+        self.layer3 = layer3  # Lista de 9 vectores (cada uno de 3 dimensiones)
+    
+    def __str__(self):
+        """Representación visual de la estructura fractal"""
+        l1_str = f"L1: {self.layer1}"
+        l2_str = f"L2: {[vec for vec in self.layer2]}"
+        l3_str = f"L3: {[vec for vec in self.layer3]}"
+        return f"FractalVector(\n  {l1_str}\n  {l2_str}\n  {l3_str}\n)"
+
+
+class FractalProcessor:
+    """Gestiona el procesamiento fractal a través de los tres niveles de síntesis"""
+    def __init__(self):
+        self.transcender = Transcender()
+    
+    def level1_synthesis(self, A, B, C):
+        """
+        Síntesis Nivel 1: Crea un Vector Fractal a partir de tres vectores básicos
+        Documentación: 4.2. Level 1 Synthesis: Creating a Fractal Vector
+        """
+        # Capa 3 (27 dimensiones): Descomposición de las entradas
+        input_components = A + B + C  # 9 componentes -> expandimos a 27
+        layer3 = [input_components[i % 9] for i in range(27)]  # Patrón recursivo
+        
+        # Capa 2 (9 dimensiones): Síntesis intermedia
+        layer2 = []
+        for i in range(0, 27, 9):  # Procesar en grupos de 9
+            group = layer3[i:i+9]
+            subgroup_results = []
+            for j in range(0, 9, 3):  # Procesar en subgrupos de 3
+                # Corregido: pasar listas de 3 elementos, no escalares
+                trio = group[j:j+3]
+                Ms, _, _ = self.transcender.procesar(trio[0], trio[1], trio[2])
+                subgroup_results.append(Ms)
+            layer2.extend(subgroup_results)
+        
+        # Capa 1 (3 dimensiones): Síntesis global
+        Ms, Ss, MetaM = self.transcender.procesar(
+            layer2[0], layer2[1], layer2[2]
+        )
+        return FractalVector(Ms, layer2, layer3)
+    
+    def level2_synthesis(self, fv1, fv2, fv3):
+        """
+        Síntesis Nivel 2: Combina tres Vectores Fractales en una Meta-Estructura
+        Documentación: 4.3. Level 2 Synthesis: The Interaction of Fractal Vectors
+        """
+        meta_structure = {"layer1": [], "layer2": [], "layer3": []}
+        
+        # Procesar capa 1 (síntesis global)
+        Ms, _, _ = self.transcender.procesar(
+            fv1.layer1, fv2.layer1, fv3.layer1
+        )
+        meta_structure["layer1"].append(Ms)
+        
+        # Procesar capa 2 (síntesis intermedia)
+        for i in range(3):
+            Ms, _, _ = self.transcender.procesar(
+                fv1.layer2[i], fv2.layer2[i], fv3.layer2[i]
+            )
+            meta_structure["layer2"].append(Ms)
+        
+        # Procesar capa 3 (síntesis detallada)
+        for i in range(9):
+            Ms, _, _ = self.transcender.procesar(
+                fv1.layer3[i], fv2.layer3[i], fv3.layer3[i]
+            )
+            meta_structure["layer3"].append(Ms)
+            
+        return meta_structure
+    
+    def level3_synthesis(self, meta1, meta2, meta3):
+        """
+        Síntesis Nivel 3: Crea nuevo Vector Fractal desde tres Meta-Estructuras
+        Documentación: 4.4. Level 3 Synthesis: The Recursive Leap to Higher Abstraction
+        """
+        # Sintetizar nueva capa 1
+        l1 = self.transcender.procesar(
+            meta1["layer1"][0], meta2["layer1"][0], meta3["layer1"][0]
+        )[0]
+        
+        # Sintetizar nueva capa 2
+        l2 = []
+        for i in range(3):
+            Ms, _, _ = self.transcender.procesar(
+                meta1["layer2"][i], meta2["layer2"][i], meta3["layer2"][i]
+            )
+            l2.append(Ms)
+        
+        # Sintetizar nueva capa 3
+        l3 = []
+        for i in range(9):
+            Ms, _, _ = self.transcender.procesar(
+                meta1["layer3"][i], meta2["layer3"][i], meta3["layer3"][i]
+            )
+            l3.append(Ms)
+            
+        return FractalVector(l1, l2, l3)
+    
+    def analyze_fractal(self, fv1, fv2):
+        """
+        Análisis Fractal: Compara vectores desde la abstracción hacia el detalle
+        Documentación: 4.5. Analysis and Extension
+        """
+        # Comenzar por la capa más abstracta (L1)
+        if fv1.layer1 == fv2.layer1:
+            print("Coincidencia en capa abstracta (L1)")
+            
+            # Descender a capa intermedia (L2)
+            matches = 0
+            for i in range(3):
+                if fv1.layer2[i] == fv2.layer2[i]:
+                    matches += 1
+            print(f"Coincidencias en capa intermedia (L2): {matches}/3")
+            
+            # Descender a capa detallada (L3) si es necesario
+            if matches > 1:
+                detailed_matches = 0
+                for i in range(9):
+                    if fv1.layer3[i] == fv2.layer3[i]:
+                        detailed_matches += 1
+                print(f"Coincidencias detalladas (L3): {detailed_matches}/9")
+        else:
+            print("Vectores pertenecen a diferentes dominios conceptuales")
+        
+        return {
+            "l1_similarity": 1 if fv1.layer1 == fv2.layer1 else 0,
+            "l2_similarity": sum(1 for i in range(3) if fv1.layer2[i] == fv2.layer2[i]) / 3,
+            "l3_similarity": sum(1 for i in range(9) if fv1.layer3[i] == fv2.layer3[i]) / 9
+        }
 # ==============================================================================
-#  BLOQUE DE EJECUCIÓN PRINCIPAL: DEMO DE EVOLVER COMPLETO
+#  BLOQUE DE EJECUCIÓN PRINCIPAL: DEMO DEL PROCESO FRACTAL
 # ==============================================================================
+
 if __name__ == "__main__":
+    # Configurar componentes
+    fp = FractalProcessor()
     kb = KnowledgeBase()
+    
+    # Crear espacio lógico para conceptos fractales
+    kb.create_space("fractal_concepts", "Dominio para conocimiento fractal")
+    
+    print("="*20 + " SÍNTESIS NIVEL 1: CREANDO VECTORES BASE " + "="*20)
+    # Crear vectores base (documentación: 4.2)
+    fv_base1 = fp.level1_synthesis([1,0,1], [0,1,0], [1,1,1])
+    fv_base2 = fp.level1_synthesis([0,1,0], [1,0,1], [0,0,1])
+    fv_base3 = fp.level1_synthesis([1,1,0], [0,0,1], [1,0,0])
+    
+    print("\nVector Fractal 1:")
+    print(fv_base1)
+    
+    # Almacenar en base de conocimiento
     evolver = Evolver(kb)
-    trans = Transcender()
+    evolver.formalize_axiom({
+        "inputs": {"A": [1,0,1], "B": [0,1,0], "C": [1,1,1]},
+        "outputs": {
+            "Ms": fv_base1.layer1,
+            "Ss": None,  # Placeholder para ejemplo
+            "MetaM": None
+        }
+    }, "fractal_concepts")
     
-    # 1. Crear un espacio y poblarlo con varios conceptos (axiomas)
-    print("="*20 + " FASE 1: POBLANDO EL ESPACIO 'creative_writing' " + "="*20)
-    kb.create_space("creative_writing", "Conceptos para escritura de ficción")
+    print("\n" + "="*20 + " SÍNTESIS NIVEL 2: COMBINANDO VECTORES " + "="*20)
+    # Crear meta-estructura (documentación: 4.3)
+    meta_struct = fp.level2_synthesis(fv_base1, fv_base2, fv_base3)
+    print("\nMeta-Estructura resultante:")
+    print(f"L1: {meta_struct['layer1']}")
+    print(f"L2: {meta_struct['layer2']}")
+    print(f"L3: {meta_struct['layer3'][:2]}...")  # Mostrar solo muestra por brevedad
     
-    concepts = {
-        "protagonista_heroico": {"InA": [1,1,1], "InB": [0,0,0], "InC": [1,0,1]},
-        "protagonista_atormentado": {"InA": [1,1,0], "InB": [0,0,1], "InC": [1,0,0]},
-        "villano_carismatico": {"InA": [0,0,0], "InB": [1,1,1], "InC": [0,1,0]},
-        "villano_brutal": {"InA": [0,0,1], "InB": [1,1,0], "InC": [0,1,1]},
-        "aliado_leal": {"InA": [1,0,1], "InB": [0,1,0], "InC": [1,1,1]}
-    }
-
-    # Diccionario para mapear Ms a nombres de conceptos para el reporte final
-    ms_to_name_map = {}
-
-    for name, inputs in concepts.items():
-        print(f"\nProcesando concepto: '{name}'")
-        ms, ss, metam = trans.procesar(**inputs)
-        evolver.formalize_axiom(trans.last_run_data, "creative_writing")
-        ms_to_name_map[tuple(ms)] = name
-
-    # 2. Formalizar una secuencia de interacción (Dinámicas)
-    print("\n" + "="*20 + " FASE 2: APRENDIENDO DINÁMICAS " + "="*20)
-    interaction = [[1,0,0], [0,1,0], [1,1,1]]
-    evolver.formalize_dynamics(interaction, "creative_writing")
-
-    # 3. Construir el mapa conceptual (Relator)
-    print("\n" + "="*20 + " FASE 3: CONSTRUYENDO MAPA RELACIONAL " + "="*20)
-    evolver.build_relational_map("creative_writing")
-
-    # 4. Usar el Extender con el conocimiento completo
-    print("\n" + "="*20 + " FASE 4: USANDO EL EXTENDER MEJORADO " + "="*20)
+    print("\n" + "="*20 + " SÍNTESIS NIVEL 3: SALTO RECURSIVO " + "="*20)
+    # Crear meta-estructuras adicionales
+    meta_struct2 = fp.level2_synthesis(fv_base2, fv_base3, fv_base1)
+    meta_struct3 = fp.level2_synthesis(fv_base3, fv_base1, fv_base2)
     
-    guide_pkg = evolver.generate_guide_package("creative_writing")
+    # Crear nuevo vector fractal de alto nivel (documentación: 4.4)
+    fv_high_level = fp.level3_synthesis(meta_struct, meta_struct2, meta_struct3)
+    print("\nVector Fractal de Alto Nivel:")
+    print(fv_high_level)
+    
+    print("\n" + "="*20 + " ANÁLISIS FRACTAL " + "="*20)
+    # Comparar vectores (documentación: 4.5)
+    print("\nComparando vectores base:")
+    similarity = fp.analyze_fractal(fv_base1, fv_base2)
+    
+    print("\nComparando vector base con vector de alto nivel:")
+    fp.analyze_fractal(fv_base1, fv_high_level)
+    
+    print("\n" + "="*20 + " RECONSTRUCCIÓN DESDE MEMORIA " + "="*20)
+    # Reconstrucción usando el Extender
     extender = Extender()
-    extender.load_guide_package(guide_pkg)
+    extender.load_guide_package(evolver.generate_guide_package("fractal_concepts"))
     
-    print("\n--- Conocimiento en Paquete de Guías ---")
-    print(f"Modelo de Dinámicas aprendido: {guide_pkg['dynamic_model']}")
-    print(f"Mapa Relacional (distancias desde cada Ms):")
-    for ms_tuple, distances in guide_pkg['relational_map'].items():
-        print(f"  Desde '{ms_to_name_map.get(ms_tuple, 'desconocido')}' {ms_tuple}:")
-        for alt_ms_tuple, dist in distances.items():
-            alt_name = ms_to_name_map.get(alt_ms_tuple, 'desconocido')
-            print(f"    -> a '{alt_name}' {alt_ms_tuple}: {dist}")
-    print("----------------------------------------")
-    
-    # Pedir al Extender que sugiera alternativas a "protagonista_heroico"
-    ms_heroico_tuple = next(ms for ms, name in ms_to_name_map.items() if name == "protagonista_heroico")
-    
-    suggestions = extender.suggest_alternatives(list(ms_heroico_tuple))
-    
-    print(f"\nSugerencias de alternativas para 'protagonista_heroico' (Ms={list(ms_heroico_tuple)}):")
-    for alt_ms, dist in suggestions:
-        alt_name = ms_to_name_map.get(alt_ms, 'desconocido')
-        print(f" -> Concepto cercano: '{alt_name}' (Ms={list(alt_ms)}) con una distancia de {dist}")
+    target_ms = fv_base1.layer1
+    reconstructed = extender.reconstruct(target_ms)
+    print(f"\nReconstrucción para Ms={target_ms}:")
+    print(f"Entradas originales: {reconstructed['original_inputs']}")
