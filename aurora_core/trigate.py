@@ -67,4 +67,3 @@ class Trigate:
             else:
                 s_calculado.append(self.B[i])
         return s_calculado
-    

@@ -1,6 +1,14 @@
+
+from transcender import Transcender 
+
+# ==============================================================================
+#  CLASE 5: Extender (Con capacidades extendidas para fractal)
+# ==============================================================================
 class Extender:
+    """Ahora incluye capacidades para reconstrucción fractal"""
     def __init__(self):
         self.guide_package = None
+        self.transcender = Transcender()
 
     def load_guide_package(self, package):
         self.guide_package = package
@@ -19,27 +27,46 @@ class Extender:
 
         print(f" -> (Filtro Axiomático): Axioma encontrado.")
         return axiom["original_inputs"]
-
-    # NUEVO: Método para usar el mapa del Relator
-    def suggest_alternatives(self, target_ms, max_suggestions=2):
-        """
-        Usa el mapa relacional para sugerir conceptos 'cercanos' al objetivo.
-        """
-        if not self.guide_package or not self.guide_package["relational_map"]:
-            print("Extender (Relator): No hay mapa relacional cargado para sugerir alternativas.")
-            return []
+    
+    def reconstruct_fractal(self, target_fractal_vector, space_name="default"):
+        """Reconstruye un vector fractal completo desde representación abstracta"""
+        if not self.guide_package: 
+            raise Exception("Paquete de guías no cargado.")
         
-        print(f"Extender (Relator): Buscando alternativas para Ms = {target_ms}...")
-        relational_map = self.guide_package["relational_map"]
+        # Determinar el registro de axiomas a usar
+        if "space" in self.guide_package:  # Paquete de espacio único
+            axiom_registry = self.guide_package["axiom_registry"]
+        elif "all_spaces" in self.guide_package:  # Paquete multi-espacio
+            if space_name not in self.guide_package["all_spaces"]:
+                print(f"Error: Espacio '{space_name}' no disponible en paquete")
+                return None
+            axiom_registry = self.guide_package["all_spaces"][space_name]
+        else:
+            print("Error: Formato de paquete de guías inválido")
+            return None
         
-        # Obtener las distancias para nuestro Ms objetivo
-        distances = relational_map.get(tuple(target_ms))
-        if not distances:
-            print(" -> No se encontraron distancias para este concepto.")
-            return []
-
-        # Ordenar por distancia (más cercano primero)
-        sorted_alternatives = sorted(distances.items(), key=lambda item: item[1])
+        # Obtener axioma principal usando capa 1
+        axiom = axiom_registry.get(tuple(target_fractal_vector["layer1"]))
+        if not axiom:
+            print(f"Error: No se encontró axioma para Ms={target_fractal_vector['layer1']}")
+            return None
         
-        print(f" -> Conceptos cercanos encontrados: {sorted_alternatives}")
-        return sorted_alternatives[:max_suggestions]
+        # Reconstruir capa 2
+        reconstructed_layer2 = []
+        for i in range(3):
+            # En un caso real, usaríamos deducción inversa con Trigates
+            # Aquí simplificamos usando los valores almacenados
+            reconstructed_layer2.append(axiom["Ss"][i])
+        
+        # Reconstruir capa 3
+        reconstructed_layer3 = []
+        for i in range(9):
+            # En un caso real, usaríamos deducción inversa con Trigates
+            # Aquí simplificamos usando los valores almacenados
+            reconstructed_layer3.append(axiom["MetaM"]["layer3"][i])
+        
+        return {
+            "layer1": target_fractal_vector["layer1"],
+            "layer2": reconstructed_layer2,
+            "layer3": reconstructed_layer3
+        }

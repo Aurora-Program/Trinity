@@ -1,3 +1,5 @@
+from aurora_core.transcender import Trancender
+
 from alfa2 import * 
 
 

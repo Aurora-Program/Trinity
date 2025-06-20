@@ -1,4 +1,4 @@
-from aurora_core.trigate import Trigate
+from Trinity import Trigate
 
 
 # ==============================================================================
@@ -49,3 +49,89 @@ class Transcender:
             "outputs": {"Ms": Ms, "Ss": Ss, "MetaM": MetaM}
         }
         return Ms, Ss, MetaM
+
+    # NUEVO: Métodos para procesamiento fractal
+    def level1_synthesis(self, A, B, C):
+        """Crea un Vector Fractal a partir de tres vectores básicos"""
+        # Capa 3 (27 dimensiones): 9 vectores de 3 trits, repetidos 3 veces cada uno
+        base_vectors = [A, B, C, A, B, C, A, B, C]  # 9 vectores de 3 trits
+        layer3 = base_vectors * 3  # 27 vectores de 3 trits
+
+        # Capa 2 (9 dimensiones): síntesis intermedia
+        layer2 = []
+        for i in range(0, 27, 3):  # Procesar en grupos de 3 vectores
+            trio = layer3[i:i+3]  # trio = [vec1, vec2, vec3], cada uno lista de 3 trits
+            Ms, _, _ = self.procesar(trio[0], trio[1], trio[2])
+            layer2.append(Ms)
+
+        # Capa 1 (3 dimensiones): síntesis global
+        Ms, Ss, MetaM = self.procesar(layer2[0], layer2[1], layer2[2])
+        return {"layer1": Ms, "layer2": layer2, "layer3": layer3}
+    
+    def level2_synthesis(self, fv1, fv2, fv3):
+        """Combina tres Vectores Fractales en una Meta-Estructura"""
+        meta_structure = {"layer1": [], "layer2": [], "layer3": []}
+        
+        # Procesar capa 1 (síntesis global)
+        Ms, _, _ = self.procesar(fv1["layer1"], fv2["layer1"], fv3["layer1"])
+        meta_structure["layer1"].append(Ms)
+        
+        # Procesar capa 2 (síntesis intermedia)
+        for i in range(3):
+            Ms, _, _ = self.procesar(fv1["layer2"][i], fv2["layer2"][i], fv3["layer2"][i])
+            meta_structure["layer2"].append(Ms)
+        
+        # Procesar capa 3 (síntesis detallada)
+        for i in range(9):
+            Ms, _, _ = self.procesar(fv1["layer3"][i], fv2["layer3"][i], fv3["layer3"][i])
+            meta_structure["layer3"].append(Ms)
+            
+        return meta_structure
+    
+    def level3_synthesis(self, meta1, meta2, meta3):
+        """Crea nuevo Vector Fractal desde tres Meta-Estructuras"""
+        # Sintetizar nueva capa 1
+        l1, _, _ = self.procesar(meta1["layer1"][0], meta2["layer1"][0], meta3["layer1"][0])
+        
+        # Sintetizar nueva capa 2
+        l2 = []
+        for i in range(3):
+            Ms, _, _ = self.procesar(meta1["layer2"][i], meta2["layer2"][i], meta3["layer2"][i])
+            l2.append(Ms)
+        
+        # Sintetizar nueva capa 3
+        l3 = []
+        for i in range(9):
+            Ms, _, _ = self.procesar(meta1["layer3"][i], meta2["layer3"][i], meta3["layer3"][i])
+            l3.append(Ms)
+            
+        return {"layer1": l1, "layer2": l2, "layer3": l3}
+    
+    def analyze_fractal(self, fv1, fv2):
+        """Compara vectores desde la abstracción hacia el detalle"""
+        # Comenzar por la capa más abstracta (L1)
+        if fv1["layer1"] == fv2["layer1"]:
+            print("Coincidencia en capa abstracta (L1)")
+            
+            # Descender a capa intermedia (L2)
+            matches = 0
+            for i in range(3):
+                if fv1["layer2"][i] == fv2["layer2"][i]:
+                    matches += 1
+            print(f"Coincidencias en capa intermedia (L2): {matches}/3")
+            
+            # Descender a capa detallada (L3) si es necesario
+            if matches > 1:
+                detailed_matches = 0
+                for i in range(9):
+                    if fv1["layer3"][i] == fv2["layer3"][i]:
+                        detailed_matches += 1
+                print(f"Coincidencias detalladas (L3): {detailed_matches}/9")
+        else:
+            print("Vectores pertenecen a diferentes dominios conceptuales")
+        
+        return {
+            "l1_similarity": 1 if fv1["layer1"] == fv2["layer1"] else 0,
+            "l2_similarity": sum(1 for i in range(3) if fv1["layer2"][i] == fv2["layer2"][i]) / 3,
+            "l3_similarity": sum(1 for i in range(9) if fv1["layer3"][i] == fv2["layer3"][i]) / 9
+        }
