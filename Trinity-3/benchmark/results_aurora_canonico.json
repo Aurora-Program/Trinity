@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-12T12:13:42.651693",
+    "benchmark_type": "aprendizaje_aurora_arquitecturalmente_canonico",
+    "version": "Trinity-3",
+    "descripcion": "Benchmark 100% fiel al flujo Ms→MetaM→Ss(Extender)",
+    "arquitectura": {
+      "synthesis": "Ms→MetaM via Transcender",
+      "memoria": "KB con validación coherencia",
+      "extension": "Ss reconstruido via Extender",
+      "computational_honesty": "NULL propagation explícita"
+    }
+  },
+  "tests": {
+    "aprendizaje_canonico": {
+      "nombre": "aprendizaje_canonico_aurora",
+      "metricas": {
+        "precision_delta_baseline": 0.34,
+        "precision_delta_kb": 1.0,
+        "precision_valor_baseline": 0.34,
+        "precision_valor_kb": 1.0,
+        "mejora_delta_absoluta": 0.66,
+        "mejora_delta_relativa_percent": 194.1,
+        "tasa_uso_kb_percent": 100.0,
+        "tasa_uso_extender_percent": 100.0,
+        "tasa_coherencia_percent": 100.0,
+        "tasa_null_propagation_percent": 0.0
+      },
+      "estadisticas": {
+        "reglas_coherentes_aprendidas": 150,
+        "ejemplos_entrenamiento": 150,
+        "ejemplos_prueba": 100,
+        "aciertos_delta": "100/100",
+        "aciertos_valor": "100/100"
+      },
+      "passed": true
+    }
+  },
+  "estadisticas": {
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "success_rate_percent": 100.0,
+    "duration_seconds": 0.075,
+    "config_usada": {
+      "radius_busqueda": 1,
+      "semilla_random": 42,
+      "guardar_kb": false,
+      "verbose": true
+    }
+  }
+}

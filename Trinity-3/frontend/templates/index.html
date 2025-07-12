@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Aurora AI Console - Axiom Synthesizer</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f7efef; color: #e0e0e0; display: flex; justify-content: center; align-items: flex-start; padding-top: 2em; }
+        .container { width: 95%; max-width: 1200px; background: #a09393; padding: 2em; border-radius: 12px; box-shadow: 0 6px 20px rgba(221, 208, 208, 0.5); }
+        h1 { color: #4fc3f7; text-align: center; margin-bottom: 1em; }
+        #input-container { display: flex; flex-direction: column; gap: 1em; margin-bottom: 2em; }
+        textarea { width: 100%; min-height: 80px; font-family: 'Segoe UI', sans-serif; font-size: 1.1em; padding: 0.8em; border-radius: 6px; border: 1px solid #3a3a3a; background: #cec8c8; color: #f0f0f0; box-sizing: border-box; }
+        #button-group { display: flex; gap: 1em; justify-content: center; }
+        button { font-size: 1.1em; padding: 0.8em 1.5em; border-radius: 6px; border: none; background: #007acc; color: #fff; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #005f9e; }
+        button.secondary { background: #555; }
+        button.secondary:hover { background: #ffbbbb; }
+        .result-grid { display: grid; grid-template-columns: 1fr; gap: 1.5em; }
+        .result-card { background: #ffecec; padding: 1.5em; border-radius: 8px; border-left: 4px solid #007acc; }
+        .result-card.axiom { border-left-color: #9c27b0; }
+        .result-card h3 { margin-top: 0; color: #4fc3f7; border-bottom: 1px solid #444; padding-bottom: 0.5em; }
+        .result-card.axiom h3 { color: #ba68c8; }
+        pre { background: #1e1e1e; padding: 1em; border-radius: 6px; white-space: pre-wrap; word-wrap: break-word; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.95em; }
+        .error { color: #ff6b6b; text-align: center; background: #a75a5a; padding: 1em; border-radius: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Aurora AI Console</h1>
+    <div id="input-container">
+        <textarea id="frases" placeholder="Introduce una o varias palabras, una por línea..."></textarea>
+        <div id="button-group">
+            <button onclick="procesarPalabra()">Analizar Palabra</button>
+            <button onclick="sintetizarAxioma()" class="secondary">Sintetizar Axioma</button>
+        </div>
+    </div>
+    <div id="resultado-analisis" class="result-grid"></div>
+    <hr style="border-color: #444; margin: 2em 0;">
+    <div id="resultado-sintesis" class="result-grid"></div>
+    <hr style="border-color: #444; margin: 2em 0;">
+    <div id="resultado-extension" class="result-grid"></div>
+    <hr style="border-color: #444; margin: 2em 0;">
+    <div id="chat-history" class="result-grid"></div>
+</div>
+
+<script>
+// Chat history as prompt for LLM
+let chatHistory = [];
+function renderChatHistory() {
+    return chatHistory.map(turn => `
+        <div class="result-card">
+            <pre><strong>${turn.role}:</strong> ${turn.content}</pre>
+        </div>
+    `).join('');
+}
+function procesarPalabra() {
+    const frasesInput = document.getElementById('frases').value.trim();
+    const primeraPalabra = frasesInput.split(/\s+/)[0]; // Tomar solo la primera palabra
+    if (!primeraPalabra) return;
+
+    // Guardar entrada en el historial
+    chatHistory.push({ role: 'Usuario', content: primeraPalabra });
+    document.getElementById('chat-history').innerHTML = renderChatHistory();
+
+    const resultadoDiv = document.getElementById('resultado-analisis');
+    const extensionDiv = document.getElementById('resultado-extension');
+    resultadoDiv.innerHTML = '<pre>Procesando...</pre>';
+    document.getElementById('resultado-sintesis').innerHTML = '';
+    extensionDiv.innerHTML = '';
+
+    fetch('/procesar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ frase: primeraPalabra })
+    })
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(res => {
+        if (res.status === 200) {
+            resultadoDiv.innerHTML = `
+                <div class="result-card">
+                    <h3>Análisis de: ${res.body.clave}</h3>
+                </div>
+                <div class="result-card">
+                    <h3>Vector Nivel 3 (Semilla)</h3>
+                    <pre>${JSON.stringify(res.body.vector_sintetizado_n3, null, 2)}</pre>
+                </div>
+                <div class="result-card">
+                    <h3>Vector Nivel 9 (Síntesis)</h3>
+                    <pre>${JSON.stringify(res.body.vector_sintetizado_n9, null, 2)}</pre>
+                </div>
+                <div class="result-card">
+                    <h3>Vector Nivel 27 (Extensión)</h3>
+                    <pre>${JSON.stringify(res.body.vector_extendido_n27, null, 2)}</pre>
+                </div>
+                <div class="result-card">
+                    <h3>Dinámica (Contexto)</h3>
+                    <pre><b>Cercana:</b> ${res.body.dinamica_cercana.join(', ')}\\n<b>Extendida:</b> ${res.body.dinamica_extendida.join(', ')}</pre>
+                </div>
+            `;
+            if (res.body.componentes_extension) {
+                extensionDiv.innerHTML = renderExtension(res.body.componentes_extension);
+                // Añadir respuesta NLM al historial
+                const nlmText = renderNLM(res.body);
+                chatHistory.push({ role: 'Aurora', content: nlmText });
+                document.getElementById('chat-history').innerHTML = renderChatHistory();
+            }
+        } else {
+            resultadoDiv.innerHTML = `<div class="error"><strong>Error:</strong> ${res.body.error}</div>`;
+        }
+    })
+    .catch(err => {
+        resultadoDiv.innerHTML = `<div class="error"><strong>Error de Conexión:</strong> No se pudo comunicar con el servidor.</div>`;
+    });
+}
+
+function sintetizarAxioma() {
+    const frasesInput = document.getElementById('frases').value.trim();
+    const palabras = frasesInput.split(/\s+/).filter(p => p); // Dividir por cualquier espacio en blanco
+    if (palabras.length < 2) {
+        alert("Por favor, introduce al menos dos palabras para sintetizar.");
+        return;
+    }
+
+    // Guardar entrada en el historial
+    chatHistory.push({ role: 'Usuario', content: palabras.join(' ') });
+    document.getElementById('chat-history').innerHTML = renderChatHistory();
+
+    const resultadoDiv = document.getElementById('resultado-sintesis');
+    const extensionDiv = document.getElementById('resultado-extension');
+    resultadoDiv.innerHTML = '<pre>Sintetizando...</pre>';
+    document.getElementById('resultado-analisis').innerHTML = ''; // Limpiar el otro resultado
+    extensionDiv.innerHTML = '';
+
+    fetch('/sintetizar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ frases: palabras })
+    })
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(res => {
+        if (res.status === 200) {
+            resultadoDiv.innerHTML = `
+                <div class="result-card axiom">
+                    <h3>Axioma: ${res.body.clave}</h3>
+                </div>
+                <div class="result-card axiom">
+                    <h3>Vector Nivel 3 (Axioma Sintetizado)</h3>
+                    <pre>${JSON.stringify(res.body.vector_sintetizado_n3, null, 2)}</pre>
+                </div>
+                <div class="result-card axiom">
+                    <h3>Vector Nivel 9 (Síntesis del Axioma)</h3>
+                    <pre>${JSON.stringify(res.body.vector_sintetizado_n9, null, 2)}</pre>
+                </div>
+                <div class="result-card axiom">
+                    <h3>Vector Nivel 27 (Extensión del Axioma)</h3>
+                    <pre>${JSON.stringify(res.body.vector_extendido_n27, null, 2)}</pre>
+                </div>
+                <div class="result-card axiom">
+                    <h3>Dinámica del Axioma (Contexto)</h3>
+                    <pre><b>Cercana:</b> ${res.body.dinamica_cercana.join(', ')}\n<b>Extendida:</b> ${res.body.dinamica_extendida.join(', ')}</pre>
+                </div>
+            `;
+            if (res.body.componentes_extension) {
+                extensionDiv.innerHTML = renderExtension(res.body.componentes_extension);
+                // Añadir respuesta NLM al historial
+                const nlmText = renderNLM(res.body);
+                chatHistory.push({ role: 'Aurora', content: nlmText });
+                document.getElementById('chat-history').innerHTML = renderChatHistory();
+            }
+        } else {
+            resultadoDiv.innerHTML = `<div class="error"><strong>Error:</strong> ${res.body.error}</div>`;
+        }
+    })
+    .catch(err => {
+        resultadoDiv.innerHTML = `<div class="error"><strong>Error de Conexión:</strong> No se pudo comunicar con el servidor.</div>`;
+    });
+}
+
+function renderExtension(componentes) {
+    const M_AB_str = vectorToText(componentes.M_AB);
+    const S_AB_str = vectorToText(componentes.S_AB);
+    const M_BC_str = vectorToText(componentes.M_BC);
+    const S_BC_str = vectorToText(componentes.S_BC);
+    const M_CA_str = vectorToText(componentes.M_CA);
+    const S_CA_str = vectorToText(componentes.S_CA);
+
+    return `
+        <div class="result-card">
+            <h3>Componentes de la Extensión (Texto)</h3>
+            <pre>
+<b>M_AB:</b> ${M_AB_str}
+<b>S_AB:</b> ${S_AB_str}
+
+<b>M_BC:</b> ${M_BC_str}
+<b>S_BC:</b> ${S_BC_str}
+
+<b>M_CA:</b> ${M_CA_str}
+<b>S_CA:</b> ${S_CA_str}
+            </pre>
+        </div>
+    `;
+}
+
+function vectorToText(vector) {
+    if (!vector) return "N/A";
+    // Esta es una conversión simple, se puede hacer más compleja.
+    // Por ejemplo, mapeando [1,0,0] a "A", [0,1,0] a "B", etc.
+    const map = {
+        "1,0,0": "Alpha", "0,1,0": "Beta", "0,0,1": "Gamma",
+        "1,1,0": "Delta", "1,0,1": "Epsilon", "0,1,1": "Zeta",
+        "1,1,1": "Omega", "0,0,0": "Theta"
+    };
+    const key = vector.join(',');
+    return map[key] || JSON.stringify(vector);
+}
+
+// Render natural-language summary of the extender output
+function renderNLM(body) {
+    let text = `<div class="result-card"><h3>Resumen NLM</h3><pre>`;
+    text += `Axioma: ${body.clave}\n`;
+    text += `Dinámica cercana: ${body.dinamica_cercana.join(', ')}\n`;
+    text += `Dinámica extendida: ${body.dinamica_extendida.join(', ')}\n\n`;
+    if (body.palabras_nivel9) text += `Palabras Nivel 9: ${body.palabras_nivel9.join(', ')}\n`;
+    if (body.palabras_nivel27) text += `Palabras Nivel 27: ${body.palabras_nivel27.join(', ')}\n\n`;
+    text += `Vector Semilla (N3): ${JSON.stringify(body.vector_sintetizado_n3)}\n`;
+    text += `Vector Síntesis (N9): ${JSON.stringify(body.vector_sintetizado_n9)}\n`;
+    text += `Vector Extensión (N27): ${JSON.stringify(body.vector_extendido_n27)}\n`;
+    text += `</pre></div>`;
+    return text;
+}
+</script>
+</body>
+</html>

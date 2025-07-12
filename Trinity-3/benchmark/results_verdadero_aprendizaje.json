@@ -1,0 +1,214 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-11T15:09:23.583953",
+    "benchmark_type": "verdadero_aprendizaje_aurora",
+    "version": "Trinity-3",
+    "descripcion": "Evaluación de aprendizaje real con ground truth y mejora medible"
+  },
+  "tests": {
+    "aprendizaje_aritmetico": {
+      "nombre": "aprendizaje_aritmetico",
+      "error_inicial": 0.6,
+      "error_post_aprendizaje": 0.5,
+      "mejora_absoluta": 0.1,
+      "mejora_relativa_percent": 16.7,
+      "entradas_aprendidas": 3,
+      "predicciones_iniciales": [
+        {
+          "input": [
+            1,
+            2,
+            3
+          ],
+          "esperado": [
+            0,
+            1,
+            0
+          ],
+          "predicho": [
+            0,
+            0,
+            1
+          ],
+          "error": 0.6666666666666666
+        },
+        {
+          "input": [
+            2,
+            3,
+            4
+          ],
+          "esperado": [
+            1,
+            0,
+            1
+          ],
+          "predicho": [
+            0,
+            0,
+            0
+          ],
+          "error": 0.6666666666666666
+        }
+      ],
+      "predicciones_post_aprendizaje": [
+        {
+          "input": [
+            4,
+            5,
+            6
+          ],
+          "esperado": [
+            1,
+            1,
+            1
+          ],
+          "predicho": [
+            0,
+            0,
+            1
+          ],
+          "error": 0.6666666666666666,
+          "uso_kb": false
+        },
+        {
+          "input": [
+            5,
+            6,
+            7
+          ],
+          "esperado": [
+            0,
+            1,
+            0
+          ],
+          "predicho": [
+            0,
+            0,
+            0
+          ],
+          "error": 0.3333333333333333,
+          "uso_kb": false
+        }
+      ],
+      "passed": false
+    },
+    "aprendizaje_fibonacci": {
+      "nombre": "aprendizaje_fibonacci",
+      "error_inicial": 0.467,
+      "error_post_aprendizaje": 0.5,
+      "mejora_absoluta": -0.033,
+      "mejora_relativa_percent": -7.1,
+      "entradas_aprendidas": 3,
+      "predicciones_iniciales": [
+        {
+          "input": [
+            1,
+            1,
+            2
+          ],
+          "esperado": [
+            1,
+            1,
+            1
+          ],
+          "predicho": [
+            1,
+            0,
+            0
+          ],
+          "error": 0.6666666666666666
+        },
+        {
+          "input": [
+            1,
+            2,
+            3
+          ],
+          "esperado": [
+            1,
+            0,
+            1
+          ],
+          "predicho": [
+            0,
+            0,
+            1
+          ],
+          "error": 0.3333333333333333
+        }
+      ],
+      "predicciones_post_aprendizaje": [
+        {
+          "input": [
+            3,
+            5,
+            8
+          ],
+          "esperado": [
+            1,
+            1,
+            1
+          ],
+          "predicho": [
+            1,
+            0,
+            1
+          ],
+          "error": 0.3333333333333333,
+          "uso_kb": false
+        },
+        {
+          "input": [
+            5,
+            8,
+            13
+          ],
+          "esperado": [
+            1,
+            0,
+            1
+          ],
+          "predicho": [
+            0,
+            0,
+            0
+          ],
+          "error": 0.6666666666666666,
+          "uso_kb": false
+        }
+      ],
+      "passed": false
+    },
+    "curva_aprendizaje": {
+      "nombre": "curva_aprendizaje",
+      "errores_por_n_ejemplos": [
+        0.667,
+        0.667,
+        0.667,
+        0.667,
+        0.667
+      ],
+      "mejora_progresiva": true,
+      "mejora_total": 0.0,
+      "mejora_significativa": false,
+      "passed": false
+    },
+    "ablacion_kb": {
+      "nombre": "ablacion_kb",
+      "error_con_kb": 0.667,
+      "error_sin_kb": 0.667,
+      "diferencia": 0.0,
+      "entradas_kb": 2,
+      "kb_aporta_valor": false,
+      "passed": false
+    }
+  },
+  "estadisticas": {
+    "total_tests": 4,
+    "passed": 0,
+    "failed": 4,
+    "success_rate_percent": 0.0,
+    "duration_seconds": 0.0
+  }
+}

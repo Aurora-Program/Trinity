@@ -1,0 +1,52 @@
+{
+  "descripcion": "Dataset para evaluar la coherencia semántica de Aurora. Cada entrada contiene una 'premisa' y una 'prueba' con una relación semántica esperada.",
+  "dataset": [
+    {
+      "id": "coherence-001",
+      "premise": "El sol calienta la tierra.",
+      "tests": [
+        {
+          "type": "sinonimia",
+          "sentence": "El astro rey irradia calor al planeta.",
+          "expected_similarity": "alta"
+        },
+        {
+          "type": "antonimia",
+          "sentence": "La luna enfría el océano.",
+          "expected_similarity": "baja"
+        },
+        {
+          "type": "causa-efecto",
+          "sentence": "Las plantas crecen gracias a la luz.",
+          "expected_similarity": "media"
+        },
+        {
+          "type": "sin_relacion",
+          "sentence": "El coche es de color azul.",
+          "expected_similarity": "muy_baja"
+        }
+      ]
+    },
+    {
+      "id": "coherence-002",
+      "premise": "Los pájaros construyen nidos en los árboles.",
+      "tests": [
+        {
+          "type": "generalizacion",
+          "sentence": "Los animales crean refugios en la naturaleza.",
+          "expected_similarity": "media"
+        },
+        {
+          "type": "especificacion",
+          "sentence": "El gorrión hace su nido en el roble.",
+          "expected_similarity": "alta"
+        },
+        {
+          "type": "inferencia",
+          "sentence": "La primavera ha llegado.",
+          "expected_similarity": "media"
+        }
+      ]
+    }
+  ]
+}

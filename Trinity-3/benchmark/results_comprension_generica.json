@@ -1,0 +1,679 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-11T15:04:17.067506",
+    "benchmark_type": "comprension_generica_aurora",
+    "version": "Trinity-3",
+    "descripcion": "Evaluación de comprensión emergente sin estrategias específicas"
+  },
+  "tests": {
+    "secuencias_numericas_emergentes": [
+      {
+        "nombre": "emergente_secuencial_simple",
+        "secuencia": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "vectores_ternarios": [
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ]
+        ],
+        "analisis_evolver": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            1,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "num_sintesis": 3,
+        "patrones_detectados": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            0,
+            0,
+            1
+          ]
+        },
+        "prediccion": [
+          0,
+          0,
+          1
+        ],
+        "conocimiento_almacenado": true,
+        "passed": true
+      },
+      {
+        "nombre": "emergente_progresion_par",
+        "secuencia": [
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        "vectores_ternarios": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "analisis_evolver": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            1,
+            0
+          ],
+          "or": [
+            0,
+            1,
+            1
+          ]
+        },
+        "num_sintesis": 3,
+        "patrones_detectados": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            0,
+            0,
+            1
+          ]
+        },
+        "prediccion": [
+          0,
+          0,
+          1
+        ],
+        "conocimiento_almacenado": true,
+        "passed": true
+      },
+      {
+        "nombre": "emergente_progresion_impar",
+        "secuencia": [
+          1,
+          3,
+          5,
+          7,
+          9
+        ],
+        "vectores_ternarios": [
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "analisis_evolver": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            1
+          ],
+          "and": [
+            1,
+            1,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "num_sintesis": 3,
+        "patrones_detectados": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            0,
+            0,
+            1
+          ]
+        },
+        "prediccion": [
+          0,
+          0,
+          1
+        ],
+        "conocimiento_almacenado": true,
+        "passed": true
+      },
+      {
+        "nombre": "emergente_fibonacci",
+        "secuencia": [
+          1,
+          1,
+          2,
+          3,
+          5
+        ],
+        "vectores_ternarios": [
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            0
+          ]
+        ],
+        "analisis_evolver": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            0
+          ],
+          "and": [
+            0,
+            1,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            0
+          ]
+        },
+        "num_sintesis": 3,
+        "patrones_detectados": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            0,
+            1
+          ]
+        },
+        "prediccion": [
+          1,
+          0,
+          1
+        ],
+        "conocimiento_almacenado": true,
+        "passed": true
+      },
+      {
+        "nombre": "emergente_cuadrados",
+        "secuencia": [
+          1,
+          4,
+          9,
+          16,
+          25
+        ],
+        "vectores_ternarios": [
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ]
+        ],
+        "analisis_evolver": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            1,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "num_sintesis": 3,
+        "patrones_detectados": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            0,
+            0,
+            1
+          ]
+        },
+        "prediccion": [
+          0,
+          0,
+          1
+        ],
+        "conocimiento_almacenado": true,
+        "passed": true
+      }
+    ],
+    "secuencias_abstractas": [
+      {
+        "nombre": "abstracta_alfabetica",
+        "secuencia": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e"
+        ],
+        "vectorizacion_exitosa": true,
+        "analisis_emergente": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            0
+          ],
+          "and": [
+            1,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            0
+          ]
+        },
+        "passed": true
+      },
+      {
+        "nombre": "abstracta_colores_ciclicos",
+        "secuencia": [
+          "rojo",
+          "azul",
+          "verde",
+          "rojo",
+          "azul"
+        ],
+        "vectorizacion_exitosa": true,
+        "analisis_emergente": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            0
+          ],
+          "and": [
+            0,
+            1,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            0
+          ]
+        },
+        "passed": true
+      },
+      {
+        "nombre": "abstracta_vectores_unitarios",
+        "secuencia": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "vectorizacion_exitosa": true,
+        "analisis_emergente": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "passed": true
+      },
+      {
+        "nombre": "abstracta_longitudes_palabras",
+        "secuencia": [
+          "corto",
+          "medio",
+          "largo",
+          "extra"
+        ],
+        "vectorizacion_exitosa": true,
+        "analisis_emergente": {
+          "iguales": true,
+          "xor": [
+            1,
+            1,
+            0
+          ],
+          "and": [
+            1,
+            1,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            0
+          ]
+        },
+        "passed": true
+      }
+    ],
+    "aprendizaje_emergente": [
+      {
+        "nombre": "aprendizaje_secuencia_0",
+        "secuencia": [
+          1,
+          2,
+          3
+        ],
+        "conocimientos_acumulados": 10,
+        "analisis_realizado": true,
+        "passed": true
+      },
+      {
+        "nombre": "aprendizaje_secuencia_1",
+        "secuencia": [
+          2,
+          3,
+          4
+        ],
+        "conocimientos_acumulados": 11,
+        "analisis_realizado": true,
+        "passed": true
+      },
+      {
+        "nombre": "aprendizaje_secuencia_2",
+        "secuencia": [
+          3,
+          4,
+          5
+        ],
+        "conocimientos_acumulados": 12,
+        "analisis_realizado": true,
+        "passed": true
+      },
+      {
+        "nombre": "aprendizaje_secuencia_3",
+        "secuencia": [
+          4,
+          5,
+          6
+        ],
+        "conocimientos_acumulados": 13,
+        "analisis_realizado": true,
+        "passed": true
+      },
+      {
+        "nombre": "recuperacion_conocimiento",
+        "entradas_encontradas": 0,
+        "passed": false
+      }
+    ],
+    "extender_emergente": [
+      {
+        "nombre": "extender_emergente",
+        "Ss_input": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ]
+        ],
+        "reconstruccion_realizada": true,
+        "resultado": {
+          "arquetipo_utilizado": "Patrón detectado - XOR: [0, 0, 1], AND: [0, 0, 0], OR: [1, 1, 1]",
+          "detalles_encontrados": [],
+          "tensores_reconstruidos": null,
+          "relator_result": null
+        },
+        "passed": true
+      }
+    ],
+    "comprension_pura": [
+      {
+        "nombre": "comprension_pura_abstracta",
+        "secuencia": [
+          "X",
+          "Y",
+          "Z",
+          "X",
+          "Y"
+        ],
+        "vectores_unicos": 1,
+        "diversidad_vectorial": false,
+        "analisis_emergente": true,
+        "passed": false
+      }
+    ]
+  },
+  "estadisticas": {
+    "total_tests": 16,
+    "passed": 14,
+    "failed": 2,
+    "success_rate_percent": 87.5,
+    "duration_seconds": 0.0
+  },
+  "estadisticas_por_tipo": {
+    "secuencias_numericas_emergentes": {
+      "passed": 5,
+      "total": 5,
+      "success_rate": 100.0
+    },
+    "secuencias_abstractas": {
+      "passed": 4,
+      "total": 4,
+      "success_rate": 100.0
+    },
+    "aprendizaje_emergente": {
+      "passed": 4,
+      "total": 5,
+      "success_rate": 80.0
+    },
+    "extender_emergente": {
+      "passed": 1,
+      "total": 1,
+      "success_rate": 100.0
+    },
+    "comprension_pura": {
+      "passed": 0,
+      "total": 1,
+      "success_rate": 0.0
+    }
+  }
+}

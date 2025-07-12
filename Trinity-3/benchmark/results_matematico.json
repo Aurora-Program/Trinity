@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-11T13:40:56.638030",
+    "benchmark_type": "matematico_core",
+    "version": "1.0"
+  },
+  "tests": {
+    "creacion_vectores": [
+      {
+        "nombre": "creacion_vector_simple",
+        "input_length": 27,
+        "output_length": 3,
+        "passed": false
+      },
+      {
+        "nombre": "creacion_vector_anidado",
+        "estructura_original": "<class 'list'>",
+        "passed": true
+      },
+      {
+        "nombre": "creacion_vector_vacio",
+        "all_zeros": false,
+        "passed": false
+      }
+    ],
+    "operaciones_basicas": [
+      {
+        "nombre": "conversion_to_list",
+        "vector1_length": 3,
+        "vector2_length": 3,
+        "passed": false
+      },
+      {
+        "nombre": "calculo_norma",
+        "norma_vector1": 0.0,
+        "norma_vector2": 0.0,
+        "passed": false
+      }
+    ],
+    "propiedades_fractales": [
+      {
+        "nombre": "escalabilidad_fractal",
+        "ratio_mantenido": true,
+        "passed": true
+      },
+      {
+        "nombre": "autosimilitud_patron",
+        "patron_preservado": true,
+        "passed": true
+      }
+    ],
+    "rendimiento": [
+      {
+        "nombre": "creacion_masiva_100_vectores",
+        "error": "float division by zero",
+        "passed": false
+      },
+      {
+        "nombre": "conversion_masiva_50_vectores",
+        "error": "float division by zero",
+        "passed": false
+      }
+    ],
+    "casos_extremos": [
+      {
+        "nombre": "valores_muy_grandes",
+        "input_max": 1000000.0,
+        "passed": true
+      },
+      {
+        "nombre": "valores_muy_pequeños",
+        "input_min": 1e-06,
+        "passed": true
+      },
+      {
+        "nombre": "valores_negativos",
+        "passed": true
+      }
+    ]
+  },
+  "estadisticas": {
+    "total_tests": 12,
+    "passed": 6,
+    "failed": 6,
+    "success_rate_percent": 50.0,
+    "duration_seconds": 0.0
+  }
+}

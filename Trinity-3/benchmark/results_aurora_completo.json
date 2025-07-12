@@ -1,0 +1,451 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-11T13:47:31.627562",
+    "benchmark_type": "aurora_core_completo",
+    "version": "Trinity-3",
+    "descripcion": "Benchmark completo del sistema Aurora usando las clases reales"
+  },
+  "tests": {
+    "trigate_basico": [
+      {
+        "nombre": "inferencia_basica",
+        "A": [
+          1,
+          0,
+          1
+        ],
+        "B": [
+          0,
+          1,
+          1
+        ],
+        "M": [
+          1,
+          1,
+          0
+        ],
+        "R_obtenido": [
+          1,
+          1,
+          1
+        ],
+        "estructura_correcta": true,
+        "passed": true
+      },
+      {
+        "nombre": "aprendizaje_basico",
+        "A": [
+          1,
+          0,
+          1
+        ],
+        "B": [
+          0,
+          1,
+          1
+        ],
+        "R": [
+          1,
+          1,
+          0
+        ],
+        "M_aprendido": [
+          1,
+          1,
+          1
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "sintesis_basica",
+        "A": [
+          1,
+          0,
+          1
+        ],
+        "B": [
+          0,
+          1,
+          0
+        ],
+        "M_sintetizado": [
+          1,
+          1,
+          1
+        ],
+        "S_sintetizado": [
+          0,
+          0,
+          0
+        ],
+        "passed": true
+      }
+    ],
+    "transcender_jerarquico": [
+      {
+        "nombre": "computacion_transcender_basica",
+        "inputs": {
+          "A": [
+            1,
+            0,
+            1
+          ],
+          "B": [
+            0,
+            1,
+            0
+          ],
+          "C": [
+            1,
+            1,
+            0
+          ]
+        },
+        "claves_resultado": [
+          "A",
+          "B",
+          "C",
+          "M_AB",
+          "S_AB",
+          "M_BC",
+          "S_BC",
+          "M_CA",
+          "S_CA",
+          "M_emergent",
+          "S_emergent",
+          "M_intermediate",
+          "MetaM"
+        ],
+        "MetaM": [
+          0,
+          1,
+          1
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "inferencia_R",
+        "A": [
+          1,
+          0,
+          1
+        ],
+        "B": [
+          0,
+          1,
+          0
+        ],
+        "M_observed": [
+          1,
+          1,
+          1
+        ],
+        "R_hipotesis": [
+          0,
+          0,
+          0
+        ],
+        "passed": true
+      }
+    ],
+    "fractal_tensor": [
+      {
+        "nombre": "creacion_tensor_aleatorio",
+        "estructura_nivel_3": 3,
+        "estructura_nivel_9": 9,
+        "estructura_nivel_27": 27,
+        "passed": true
+      },
+      {
+        "nombre": "procesamiento_fractal_transcender",
+        "niveles_procesados": [
+          "nivel_27",
+          "nivel_9",
+          "nivel_3",
+          "final"
+        ],
+        "nivel_3_resultados": 1,
+        "nivel_9_resultados": 3,
+        "nivel_27_resultados": 9,
+        "passed": true
+      }
+    ],
+    "evolver_arquetipos": [
+      {
+        "nombre": "analisis_metaMs",
+        "metaMs_input": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ]
+        ],
+        "analisis_resultado": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "passed": true
+      },
+      {
+        "nombre": "dinamica_adaptativa",
+        "sequence": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "metric_usada": "hamming",
+        "arquetipo_sugerido": "estático",
+        "passed": true
+      },
+      {
+        "nombre": "relator_vectores",
+        "vectors": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "clusters": [
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "outliers": [],
+        "emergent_vector": [
+          0,
+          1,
+          1
+        ],
+        "passed": true
+      }
+    ],
+    "knowledge_base": [
+      {
+        "nombre": "agregar_entrada_basica",
+        "entrada_agregada": {
+          "A": [
+            1,
+            0,
+            1
+          ],
+          "B": [
+            0,
+            1,
+            0
+          ],
+          "C": [
+            1,
+            1,
+            0
+          ],
+          "M_emergent": [
+            1,
+            0,
+            1
+          ],
+          "MetaM": [
+            0,
+            1,
+            0
+          ],
+          "R_validos": [
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "transcender_id": null
+        },
+        "total_entradas": 1,
+        "passed": true
+      },
+      {
+        "nombre": "busqueda_por_inputs",
+        "resultados_encontrados": 1,
+        "primer_resultado": {
+          "A": [
+            1,
+            0,
+            1
+          ],
+          "B": [
+            0,
+            1,
+            0
+          ],
+          "C": [
+            1,
+            1,
+            0
+          ],
+          "M_emergent": [
+            1,
+            0,
+            1
+          ],
+          "MetaM": [
+            0,
+            1,
+            0
+          ],
+          "R_validos": [
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "transcender_id": null
+        },
+        "passed": true
+      }
+    ],
+    "extender_reconstruccion": [
+      {
+        "nombre": "extension_basica",
+        "Ss_input": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ]
+        ],
+        "reconstruccion": {
+          "arquetipo_utilizado": "Patrón detectado - XOR: [0, 0, 1], AND: [0, 0, 0], OR: [1, 1, 1]",
+          "detalles_encontrados": [],
+          "tensores_reconstruidos": null,
+          "relator_result": null
+        },
+        "passed": true
+      }
+    ],
+    "integracion_completa": [
+      {
+        "nombre": "flujo_completo_aurora",
+        "tensor_procesado": true,
+        "metaMs_extraidos": 13,
+        "analisis_realizado": true,
+        "arquetipo_formalizado": "Todos los MetaM globales son iguales: [None, None, None]",
+        "passed": true
+      }
+    ]
+  },
+  "estadisticas": {
+    "total_tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "success_rate_percent": 100.0,
+    "duration_seconds": 0.021
+  },
+  "estadisticas_por_componente": {
+    "trigate_basico": {
+      "passed": 3,
+      "total": 3,
+      "success_rate": 100.0
+    },
+    "transcender_jerarquico": {
+      "passed": 2,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "fractal_tensor": {
+      "passed": 2,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "evolver_arquetipos": {
+      "passed": 3,
+      "total": 3,
+      "success_rate": 100.0
+    },
+    "knowledge_base": {
+      "passed": 2,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "extender_reconstruccion": {
+      "passed": 1,
+      "total": 1,
+      "success_rate": 100.0
+    },
+    "integracion_completa": {
+      "passed": 1,
+      "total": 1,
+      "success_rate": 100.0
+    }
+  }
+}

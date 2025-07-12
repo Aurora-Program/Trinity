@@ -1,0 +1,916 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-11T13:51:53.710606",
+    "benchmark_type": "series_numericas_aurora",
+    "version": "Trinity-3",
+    "descripcion": "Benchmark de resolución de series numéricas usando Aurora"
+  },
+  "tests": {
+    "progresiones_aritmeticas": [
+      {
+        "nombre": "aritmetica_impares",
+        "serie": [
+          1,
+          3,
+          5,
+          7,
+          9
+        ],
+        "esperado": 11,
+        "predicho": 11,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            1
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "diferencias": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "aritmetica_pares",
+        "serie": [
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        "esperado": 12,
+        "predicho": 12,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            0
+          ]
+        },
+        "diferencias": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "aritmetica_multiplos_5",
+        "serie": [
+          5,
+          10,
+          15,
+          20,
+          25
+        ],
+        "esperado": 30,
+        "predicho": 30,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            0,
+            0,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "diferencias": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "aritmetica_diferencia_3",
+        "serie": [
+          1,
+          4,
+          7,
+          10,
+          13
+        ],
+        "esperado": 16,
+        "predicho": 16,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "diferencias": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "passed": true
+      }
+    ],
+    "progresiones_geometricas": [
+      {
+        "nombre": "geometrica_potencias_2",
+        "serie": [
+          2,
+          4,
+          8,
+          16,
+          32
+        ],
+        "esperado": 64,
+        "predicho": 64,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            0
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            0
+          ]
+        },
+        "arquetipo": "Patrón detectado - XOR: [1, 1, 0], AND: [0, 0, 0], OR: [1, 1, 0]",
+        "passed": true
+      },
+      {
+        "nombre": "geometrica_potencias_3",
+        "serie": [
+          1,
+          3,
+          9,
+          27,
+          81
+        ],
+        "esperado": 243,
+        "predicho": 243,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            1
+          ],
+          "or": [
+            0,
+            1,
+            1
+          ]
+        },
+        "arquetipo": "Patrón detectado - XOR: [0, 1, 1], AND: [0, 0, 1], OR: [0, 1, 1]",
+        "passed": true
+      },
+      {
+        "nombre": "geometrica_multiplo_por_2",
+        "serie": [
+          5,
+          10,
+          20,
+          40,
+          80
+        ],
+        "esperado": 160,
+        "predicho": 160,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            0,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "arquetipo": "Patrón detectado - XOR: [0, 1, 1], AND: [0, 0, 0], OR: [1, 1, 1]",
+        "passed": true
+      },
+      {
+        "nombre": "geometrica_binaria",
+        "serie": [
+          1,
+          2,
+          4,
+          8,
+          16
+        ],
+        "esperado": 32,
+        "predicho": 32,
+        "patron_detectado": {
+          "iguales": false,
+          "xor": [
+            1,
+            1,
+            1
+          ],
+          "and": [
+            0,
+            0,
+            0
+          ],
+          "or": [
+            1,
+            1,
+            1
+          ]
+        },
+        "arquetipo": "Patrón detectado - XOR: [1, 1, 1], AND: [0, 0, 0], OR: [1, 1, 1]",
+        "passed": true
+      }
+    ],
+    "series_especiales": [
+      {
+        "nombre": "especial_fibonacci",
+        "serie": [
+          1,
+          1,
+          2,
+          3,
+          5
+        ],
+        "esperado": 8,
+        "predicho": 8,
+        "tolerancia_usada": 1,
+        "vectores_generados": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "especial_cuadrados",
+        "serie": [
+          1,
+          4,
+          9,
+          16,
+          25
+        ],
+        "esperado": 36,
+        "predicho": 36,
+        "tolerancia_usada": 3.6,
+        "vectores_generados": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "especial_cubos",
+        "serie": [
+          1,
+          8,
+          27,
+          64,
+          125
+        ],
+        "esperado": 216,
+        "predicho": 216,
+        "tolerancia_usada": 21.6,
+        "vectores_generados": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "passed": true
+      },
+      {
+        "nombre": "especial_primos",
+        "serie": [
+          2,
+          3,
+          5,
+          7,
+          11
+        ],
+        "esperado": 13,
+        "predicho": 15,
+        "tolerancia_usada": 1.3,
+        "vectores_generados": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1
+          ]
+        ],
+        "passed": false
+      },
+      {
+        "nombre": "especial_triangulares",
+        "serie": [
+          1,
+          3,
+          6,
+          10,
+          15
+        ],
+        "esperado": 21,
+        "predicho": 21,
+        "tolerancia_usada": 2.1,
+        "vectores_generados": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "passed": true
+      }
+    ],
+    "series_complejas": [
+      {
+        "nombre": "compleja_diferencias_crecientes",
+        "serie": [
+          1,
+          2,
+          4,
+          7,
+          11,
+          16
+        ],
+        "esperado": 22,
+        "predicho": 22,
+        "tolerancia_usada": 4.4,
+        "analisis_completo": {
+          "serie_original": [
+            1,
+            2,
+            4,
+            7,
+            11,
+            16
+          ],
+          "vectores_serie": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          "patron_detectado": {
+            "iguales": false,
+            "xor": [
+              1,
+              1,
+              1
+            ],
+            "and": [
+              0,
+              0,
+              0
+            ],
+            "or": [
+              1,
+              1,
+              1
+            ]
+          },
+          "siguiente_predicho": 22,
+          "diferencias_analizadas": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "arquetipo_utilizado": "Patrón detectado - XOR: [1, 1, 1], AND: [0, 0, 0], OR: [1, 1, 1]"
+        },
+        "passed": true
+      },
+      {
+        "nombre": "compleja_n_por_n_mas_1",
+        "serie": [
+          2,
+          6,
+          12,
+          20,
+          30
+        ],
+        "esperado": 42,
+        "predicho": 42,
+        "tolerancia_usada": 8.4,
+        "analisis_completo": {
+          "serie_original": [
+            2,
+            6,
+            12,
+            20,
+            30
+          ],
+          "vectores_serie": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ]
+          ],
+          "patron_detectado": {
+            "iguales": false,
+            "xor": [
+              0,
+              0,
+              0
+            ],
+            "and": [
+              0,
+              0,
+              0
+            ],
+            "or": [
+              1,
+              1,
+              0
+            ]
+          },
+          "siguiente_predicho": 42,
+          "diferencias_analizadas": [
+            4,
+            6,
+            8,
+            10
+          ],
+          "arquetipo_utilizado": "Patrón detectado - XOR: [0, 0, 0], AND: [0, 0, 0], OR: [1, 1, 0]"
+        },
+        "passed": true
+      },
+      {
+        "nombre": "compleja_lucas_modificada",
+        "serie": [
+          1,
+          1,
+          3,
+          5,
+          11,
+          21
+        ],
+        "esperado": 43,
+        "predicho": 31,
+        "tolerancia_usada": 8.6,
+        "analisis_completo": {
+          "serie_original": [
+            1,
+            1,
+            3,
+            5,
+            11,
+            21
+          ],
+          "vectores_serie": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ]
+          ],
+          "patron_detectado": {
+            "iguales": false,
+            "xor": [
+              0,
+              1,
+              1
+            ],
+            "and": [
+              0,
+              0,
+              1
+            ],
+            "or": [
+              0,
+              1,
+              1
+            ]
+          },
+          "siguiente_predicho": 31,
+          "diferencias_analizadas": [
+            0,
+            2,
+            2,
+            6,
+            10
+          ],
+          "arquetipo_utilizado": "Patrón detectado - XOR: [0, 1, 1], AND: [0, 0, 1], OR: [0, 1, 1]"
+        },
+        "passed": false
+      },
+      {
+        "nombre": "compleja_fibonacci_con_cero",
+        "serie": [
+          0,
+          1,
+          1,
+          2,
+          3,
+          5,
+          8
+        ],
+        "esperado": 13,
+        "predicho": 13,
+        "tolerancia_usada": 2.6,
+        "analisis_completo": {
+          "serie_original": [
+            0,
+            1,
+            1,
+            2,
+            3,
+            5,
+            8
+          ],
+          "vectores_serie": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          "patron_detectado": {
+            "iguales": false,
+            "xor": [
+              0,
+              0,
+              0
+            ],
+            "and": [
+              0,
+              0,
+              0
+            ],
+            "or": [
+              0,
+              0,
+              1
+            ]
+          },
+          "siguiente_predicho": 13,
+          "diferencias_analizadas": [
+            1,
+            0,
+            1,
+            1,
+            2,
+            3
+          ],
+          "arquetipo_utilizado": "Patrón detectado - XOR: [0, 0, 0], AND: [0, 0, 0], OR: [0, 0, 1]"
+        },
+        "passed": true
+      }
+    ],
+    "series_con_transcender": [
+      {
+        "nombre": "serie_con_transcender",
+        "serie_original": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "vectores_usados": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ]
+        ],
+        "resultado_transcender": {
+          "MetaM": [
+            0,
+            1,
+            0
+          ],
+          "M_emergent": [
+            0,
+            1,
+            0
+          ],
+          "S_emergent": [
+            1,
+            0,
+            1
+          ]
+        },
+        "passed": true
+      }
+    ]
+  },
+  "estadisticas": {
+    "total_tests": 18,
+    "passed": 16,
+    "failed": 2,
+    "success_rate_percent": 88.89,
+    "duration_seconds": 0.006
+  },
+  "estadisticas_por_tipo": {
+    "progresiones_aritmeticas": {
+      "passed": 4,
+      "total": 4,
+      "success_rate": 100.0
+    },
+    "progresiones_geometricas": {
+      "passed": 4,
+      "total": 4,
+      "success_rate": 100.0
+    },
+    "series_especiales": {
+      "passed": 4,
+      "total": 5,
+      "success_rate": 80.0
+    },
+    "series_complejas": {
+      "passed": 3,
+      "total": 4,
+      "success_rate": 75.0
+    },
+    "series_con_transcender": {
+      "passed": 1,
+      "total": 1,
+      "success_rate": 100.0
+    }
+  }
+}

@@ -1,0 +1,397 @@
+import time
+import json
+import numpy as np
+import os
+import sys
+from datetime import datetime
+
+# Añadir el directorio raíz al path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from aurora_core.FractalVector import FractalVector
+
+class BenchmarkMatematico:
+    def __init__(self):
+        self.resultados = {
+            "metadata": {
+                "timestamp": datetime.now().isoformat(),
+                "benchmark_type": "matematico_core",
+                "version": "1.0"
+            },
+            "tests": {}
+        }
+        self.total_tests = 0
+        self.passed_tests = 0
+
+    def test_creacion_vectores(self):
+        """Test de creación básica de FractalVector."""
+        print("🧮 Testando creación de vectores...")
+        tests = []
+        
+        # Test 1: Vector simple
+        try:
+            data = [1, 2, 3, 4, 5] * 5 + [0, 0]  # 27 elementos
+            vector = FractalVector.from_list(data)
+            resultado = vector.to_list()
+            success = len(resultado) == 27
+            tests.append({
+                "nombre": "creacion_vector_simple",
+                "input_length": len(data),
+                "output_length": len(resultado),
+                "passed": success
+            })
+            self._update_stats(success)
+        except Exception as e:
+            tests.append({
+                "nombre": "creacion_vector_simple",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        # Test 2: Vector con estructura anidada
+        try:
+            data_anidada = [[1, 2], [3, 4], 5, 6, 7, 8, 9, 10, 11, 12] + [0] * 15
+            vector = FractalVector.from_list(data_anidada)
+            resultado = vector.to_list()
+            success = resultado is not None
+            tests.append({
+                "nombre": "creacion_vector_anidado",
+                "estructura_original": str(type(data_anidada[0])),
+                "passed": success
+            })
+            self._update_stats(success)
+        except Exception as e:
+            tests.append({
+                "nombre": "creacion_vector_anidado",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        # Test 3: Vector vacío
+        try:
+            data_vacia = [0] * 27
+            vector = FractalVector.from_list(data_vacia)
+            resultado = vector.to_list()
+            success = len(resultado) == 27 and all(x == 0 for x in resultado if not isinstance(x, list))
+            tests.append({
+                "nombre": "creacion_vector_vacio",
+                "all_zeros": success,
+                "passed": success
+            })
+            self._update_stats(success)
+        except Exception as e:
+            tests.append({
+                "nombre": "creacion_vector_vacio",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        return tests
+
+    def test_operaciones_basicas(self):
+        """Test de operaciones matemáticas básicas."""
+        print("➕ Testando operaciones básicas...")
+        tests = []
+        
+        try:
+            # Crear vectores de prueba
+            data1 = [1, 2, 3] * 9  # 27 elementos
+            data2 = [2, 4, 6] * 9  # 27 elementos
+            
+            vector1 = FractalVector.from_list(data1)
+            vector2 = FractalVector.from_list(data2)
+            
+            # Test de conversión a lista
+            list1 = vector1.to_list()
+            list2 = vector2.to_list()
+            
+            tests.append({
+                "nombre": "conversion_to_list",
+                "vector1_length": len(list1),
+                "vector2_length": len(list2),
+                "passed": len(list1) == 27 and len(list2) == 27
+            })
+            self._update_stats(len(list1) == 27 and len(list2) == 27)
+            
+            # Test de norma (si existe)
+            try:
+                norma1 = np.linalg.norm([x for x in list1 if not isinstance(x, list)])
+                norma2 = np.linalg.norm([x for x in list2 if not isinstance(x, list)])
+                tests.append({
+                    "nombre": "calculo_norma",
+                    "norma_vector1": float(norma1),
+                    "norma_vector2": float(norma2),
+                    "passed": norma1 > 0 and norma2 > 0
+                })
+                self._update_stats(norma1 > 0 and norma2 > 0)
+            except Exception as e:
+                tests.append({
+                    "nombre": "calculo_norma",
+                    "error": str(e),
+                    "passed": False
+                })
+                self._update_stats(False)
+                
+        except Exception as e:
+            tests.append({
+                "nombre": "operaciones_basicas_setup",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        return tests
+
+    def test_propiedades_fractales(self):
+        """Test de propiedades específicas del tensor fractal."""
+        print("🌀 Testando propiedades fractales...")
+        tests = []
+        
+        # Test 1: Escalabilidad fractal
+        try:
+            base_data = [1, 2, 3] * 9  # 27 elementos
+            vector_base = FractalVector.from_list(base_data)
+            
+            # Escalado por factor
+            scaled_data = [x * 2 for x in base_data]
+            vector_scaled = FractalVector.from_list(scaled_data)
+            
+            base_list = vector_base.to_list()
+            scaled_list = vector_scaled.to_list()
+            
+            # Verificar que el escalado mantiene las proporciones
+            ratio_correct = True
+            for i in range(min(len(base_list), len(scaled_list))):
+                if not isinstance(base_list[i], list) and not isinstance(scaled_list[i], list):
+                    if base_list[i] != 0 and abs(scaled_list[i] / base_list[i] - 2.0) > 0.001:
+                        ratio_correct = False
+                        break
+            
+            tests.append({
+                "nombre": "escalabilidad_fractal",
+                "ratio_mantenido": ratio_correct,
+                "passed": ratio_correct
+            })
+            self._update_stats(ratio_correct)
+            
+        except Exception as e:
+            tests.append({
+                "nombre": "escalabilidad_fractal",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        # Test 2: Autosimilitud (si aplicable)
+        try:
+            # Crear un patrón que se repite
+            pattern = [1, 2, 3]
+            repeated_data = pattern * 9  # 27 elementos
+            vector = FractalVector.from_list(repeated_data)
+            result_list = vector.to_list()
+            
+            # Verificar que el patrón se mantiene
+            pattern_preserved = True
+            for i in range(0, min(len(result_list), 9), 3):
+                if (not isinstance(result_list[i], list) and 
+                    not isinstance(result_list[i+1], list) and 
+                    not isinstance(result_list[i+2], list)):
+                    if (result_list[i] != 1 or 
+                        result_list[i+1] != 2 or 
+                        result_list[i+2] != 3):
+                        pattern_preserved = False
+                        break
+            
+            tests.append({
+                "nombre": "autosimilitud_patron",
+                "patron_preservado": pattern_preserved,
+                "passed": pattern_preserved
+            })
+            self._update_stats(pattern_preserved)
+            
+        except Exception as e:
+            tests.append({
+                "nombre": "autosimilitud_patron",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        return tests
+
+    def test_rendimiento(self):
+        """Test de rendimiento del tensor fractal."""
+        print("⚡ Testando rendimiento...")
+        tests = []
+        
+        # Test de creación masiva
+        try:
+            start_time = time.time()
+            vectores = []
+            for i in range(100):
+                data = [i % 10] * 27
+                vector = FractalVector.from_list(data)
+                vectores.append(vector)
+            creation_time = time.time() - start_time
+            
+            tests.append({
+                "nombre": "creacion_masiva_100_vectores",
+                "tiempo_segundos": round(creation_time, 4),
+                "vectores_por_segundo": round(100 / creation_time, 2),
+                "passed": creation_time < 1.0  # Debe ser rápido
+            })
+            self._update_stats(creation_time < 1.0)
+            
+        except Exception as e:
+            tests.append({
+                "nombre": "creacion_masiva_100_vectores",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        # Test de conversión masiva
+        try:
+            start_time = time.time()
+            for vector in vectores[:50]:  # Usar los primeros 50
+                _ = vector.to_list()
+            conversion_time = time.time() - start_time
+            
+            tests.append({
+                "nombre": "conversion_masiva_50_vectores",
+                "tiempo_segundos": round(conversion_time, 4),
+                "conversiones_por_segundo": round(50 / conversion_time, 2),
+                "passed": conversion_time < 0.5
+            })
+            self._update_stats(conversion_time < 0.5)
+            
+        except Exception as e:
+            tests.append({
+                "nombre": "conversion_masiva_50_vectores",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        return tests
+
+    def test_casos_extremos(self):
+        """Test de casos extremos y edge cases."""
+        print("🔥 Testando casos extremos...")
+        tests = []
+        
+        # Test 1: Valores muy grandes
+        try:
+            big_data = [1e6] * 27
+            vector = FractalVector.from_list(big_data)
+            result = vector.to_list()
+            success = result is not None
+            tests.append({
+                "nombre": "valores_muy_grandes",
+                "input_max": 1e6,
+                "passed": success
+            })
+            self._update_stats(success)
+        except Exception as e:
+            tests.append({
+                "nombre": "valores_muy_grandes",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        # Test 2: Valores muy pequeños
+        try:
+            small_data = [1e-6] * 27
+            vector = FractalVector.from_list(small_data)
+            result = vector.to_list()
+            success = result is not None
+            tests.append({
+                "nombre": "valores_muy_pequeños",
+                "input_min": 1e-6,
+                "passed": success
+            })
+            self._update_stats(success)
+        except Exception as e:
+            tests.append({
+                "nombre": "valores_muy_pequeños",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        # Test 3: Valores negativos
+        try:
+            negative_data = [-1, -2, -3] * 9
+            vector = FractalVector.from_list(negative_data)
+            result = vector.to_list()
+            success = result is not None
+            tests.append({
+                "nombre": "valores_negativos",
+                "passed": success
+            })
+            self._update_stats(success)
+        except Exception as e:
+            tests.append({
+                "nombre": "valores_negativos",
+                "error": str(e),
+                "passed": False
+            })
+            self._update_stats(False)
+
+        return tests
+
+    def _update_stats(self, passed):
+        """Actualiza las estadísticas del benchmark."""
+        self.total_tests += 1
+        if passed:
+            self.passed_tests += 1
+
+    def ejecutar_benchmark(self):
+        """Ejecuta todo el benchmark matemático."""
+        print("="*60)
+        print("🧮 BENCHMARK MATEMÁTICO - AURORA CORE")
+        print("="*60)
+        
+        start_time = time.time()
+        
+        # Ejecutar todos los tests
+        self.resultados["tests"]["creacion_vectores"] = self.test_creacion_vectores()
+        self.resultados["tests"]["operaciones_basicas"] = self.test_operaciones_basicas()
+        self.resultados["tests"]["propiedades_fractales"] = self.test_propiedades_fractales()
+        self.resultados["tests"]["rendimiento"] = self.test_rendimiento()
+        self.resultados["tests"]["casos_extremos"] = self.test_casos_extremos()
+        
+        end_time = time.time()
+        
+        # Añadir estadísticas finales
+        self.resultados["estadisticas"] = {
+            "total_tests": self.total_tests,
+            "passed": self.passed_tests,
+            "failed": self.total_tests - self.passed_tests,
+            "success_rate_percent": round((self.passed_tests / self.total_tests * 100), 2),
+            "duration_seconds": round(end_time - start_time, 3)
+        }
+        
+        # Guardar resultados
+        output_path = "benchmark/results_matematico.json"
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(self.resultados, f, indent=2, ensure_ascii=False)
+        
+        # Mostrar resumen
+        stats = self.resultados["estadisticas"]
+        print(f"\n📊 RESUMEN FINAL:")
+        print(f"   Tests ejecutados: {stats['total_tests']}")
+        print(f"   ✅ Exitosos: {stats['passed']}")
+        print(f"   ❌ Fallidos: {stats['failed']}")
+        print(f"   📈 Tasa de éxito: {stats['success_rate_percent']}%")
+        print(f"   ⏱️  Duración: {stats['duration_seconds']}s")
+        print(f"\n💾 Resultados guardados en: {output_path}")
+        print("="*60)
+
+if __name__ == "__main__":
+    benchmark = BenchmarkMatematico()
+    benchmark.ejecutar_benchmark()

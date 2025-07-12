@@ -1,0 +1,27 @@
+{
+    "timestamp": "Fri Jul 11 12:51:42 2025",
+    "duration": 0.13847637176513672,
+    "total_tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "results": [
+        {
+            "id": 1,
+            "premise": "El sol calienta la tierra.",
+            "tests": [
+                {
+                    "sentence": "La tierra recibe calor del sol.",
+                    "expected": "alta",
+                    "similitud": 0.0,
+                    "passed": false
+                },
+                {
+                    "sentence": "La lluvia moja el suelo.",
+                    "expected": "baja",
+                    "similitud": 0.0,
+                    "passed": true
+                }
+            ]
+        }
+    ]
+}
