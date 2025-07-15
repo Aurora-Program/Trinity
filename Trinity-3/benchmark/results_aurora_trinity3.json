@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-13T11:42:46.337504",
+    "benchmark_type": "aurora_trinity3_architectural_intelligence",
+    "version": "Trinity-3-Advanced",
+    "descripcion": "Benchmark arquitectural para capacidades avanzadas Aurora",
+    "arquitectura": {
+      "extender_inteligente": "Análisis Arquetipo+Dinámica+Relator",
+      "honestidad_computacional": "Propagación NULL explícita",
+      "coherencia_absoluta": "Ms->MetaM única correspondencia",
+      "robustez_adversarial": "Detección outliers + ruido",
+      "generalización": "Transfer entre dominios"
+    }
+  },
+  "tests": {
+    "inteligencia_arquitectural": {
+      "nombre": "inteligencia_arquitectural_trinity3",
+      "metricas": {
+        "precision_extender_inteligente": 0.98,
+        "tasa_arquetipo_exitoso": 0.78,
+        "tasa_emergencia_relacional": 0.0,
+        "tasa_honestidad_computacional": 0.22,
+        "coherencia_absoluta_kb": -76.0
+      },
+      "estadisticas": {
+        "reglas_aprendidas": 1,
+        "reglas_con_incertidumbre": 12,
+        "casos_totales_evaluados": 10
+      },
+      "ejemplos_reconstruccion": [
+        {
+          "caso": 1,
+          "secuencia": [
+            167,
+            170,
+            173
+          ],
+          "tiene_incertidumbre": false,
+          "acierto": true
+        },
+        {
+          "caso": 2,
+          "secuencia": [
+            127,
+            130,
+            133
+          ],
+          "tiene_incertidumbre": false,
+          "acierto": true
+        },
+        {
+          "caso": 3,
+          "secuencia": [
+            188,
+            189,
+            190
+          ],
+          "tiene_incertidumbre": false,
+          "acierto": true
+        },
+        {
+          "caso": 4,
+          "secuencia": [
+            151,
+            154,
+            157
+          ],
+          "tiene_incertidumbre": false,
+          "acierto": true
+        },
+        {
+          "caso": 5,
+          "secuencia": [
+            156,
+            159,
+            162
+          ],
+          "tiene_incertidumbre": false,
+          "acierto": true
+        }
+      ],
+      "passed": false
+    },
+    "robustez_adversarial": {
+      "nombre": "robustez_hibrida_og2_og3",
+      "metricas": {
+        "detection_accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "coherence_degradation_ratio": 0.0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "false_negatives": 7,
+        "outliers_detected": 0,
+        "coherence_outliers": 0,
+        "ml_outliers": 0,
+        "voting_agreement": 0.0,
+        "corruption_ratio": 0.117,
+        "kb_size": 60,
+        "ml_available": false,
+        "ml_fitted": false
+      },
+      "passed": false
+    }
+  },
+  "estadisticas": {
+    "total_tests": 2,
+    "passed": 0,
+    "failed": 2,
+    "success_rate_percent": 0.0,
+    "duration_seconds": 0.07,
+    "config_usada": {
+      "radius_busqueda": 2,
+      "semilla_random": 42,
+      "verbose": true
+    }
+  }
+}

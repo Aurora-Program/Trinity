@@ -1,0 +1,2 @@
+config,seed,n_train,n_test,training_time,training_entries,coherence_violations,processing_attempts,success_rate,avg_accuracy_lvl3,avg_accuracy_lvl9,avg_accuracy_lvl27,avg_phi_diversity,avg_golden_stability,avg_rotation_coverage
+full_integrated,42,50,10,0.020016193389892578,15,35,50,0.3,0.0,0.0,0.0,0.0,1.0,0.0

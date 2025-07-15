@@ -1,0 +1,5 @@
+config,training_ratio,actual_n_train,training_entries,training_success_rate,kb_total_queries,kb_total_hits,kb_global_hit_ratio,learning_signals_pct,avg_accuracy_lvl3,reconstruction_methods,coherent_dataset,allow_fallback
+no_training,0,0,0,0.0,150,0,0.0,0.0,0.0,{'kb_miss_no_fallback': 50},True,False
+baseline_10pct,0.1,10,10,1.0,100,0,0.0,0.0,0.5,{'heuristic_rebuild': 50},True,True
+phi_rotation_50pct,0.5,50,50,1.0,100,0,0.0,0.0,0.5,{'heuristic_rebuild': 50},True,True
+full_integrated,1.0,100,100,1.0,100,0,0.0,0.0,0.5,{'heuristic_rebuild': 50},True,True

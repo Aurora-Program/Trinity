@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "2025-07-12T12:13:42.651693",
+    "timestamp": "2025-07-12T13:26:21.221736",
     "benchmark_type": "aprendizaje_aurora_arquitecturalmente_canonico",
     "version": "Trinity-3",
     "descripcion": "Benchmark 100% fiel al flujo Ms→MetaM→Ss(Extender)",
@@ -41,7 +41,7 @@
     "passed": 1,
     "failed": 0,
     "success_rate_percent": 100.0,
-    "duration_seconds": 0.075,
+    "duration_seconds": 0.159,
     "config_usada": {
       "radius_busqueda": 1,
       "semilla_random": 42,
